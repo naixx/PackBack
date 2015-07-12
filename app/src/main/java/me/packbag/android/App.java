@@ -1,0 +1,55 @@
+package me.packbag.android;
+
+import android.app.Application;
+import android.content.Context;
+import android.os.StrictMode;
+import android.support.annotation.NonNull;
+
+import com.raizlabs.android.dbflow.config.FlowLog;
+import com.raizlabs.android.dbflow.config.FlowManager;
+
+import me.packbag.android.util.timber.L;
+
+public class App extends Application {
+
+    private volatile AppComponent appComponent;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        long start = System.currentTimeMillis();
+        if (BuildConfig.DEBUG) {
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectAll().penaltyLog().penaltyFlashScreen().build());
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectAll().penaltyLog().build());
+            L.plant(new L.DebugTree());
+            FlowLog.setMinimumLoggingLevel(FlowLog.Level.V);
+        }
+        FlowManager.init(this);
+        long end = System.currentTimeMillis() - start;
+        L.e("startup = " + end);
+    }
+
+    @NonNull
+    public static App get(@NonNull Context context) {
+        return ((App) context.getApplicationContext());
+    }
+
+    @NonNull
+    public AppComponent component() {
+        if (appComponent == null) {
+            synchronized (App.class) {
+                if (appComponent == null) {
+                    appComponent = createAppComponent();
+                }
+            }
+        }
+
+        //noinspection ConstantConditions
+        return appComponent;
+    }
+
+    @NonNull
+    private AppComponent createAppComponent() {
+        return DaggerAppComponent.builder().appModule(new AppModule(this)).build();
+    }
+}
