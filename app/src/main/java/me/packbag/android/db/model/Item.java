@@ -14,7 +14,7 @@ import com.raizlabs.android.dbflow.structure.container.ForeignKeyContainer;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import me.packbag.android.db.Db;
+import me.packbag.android.db.api.Db;
 
 @Table(databaseName = Db.NAME)
 public class Item extends BaseModel {

@@ -10,7 +10,9 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 import me.packbag.android.App;
 import me.packbag.android.R;
 import me.packbag.android.db.model.Item;
+import me.packbag.android.db.model.ItemSet;
 import me.packbag.android.network.Backend;
+import me.packbag.android.util.timber.L;
 import rx.Observable;
 
 import static me.packbag.android.util.Rx.async2ui;
@@ -31,7 +33,13 @@ public class MainActivity extends AppCompatActivity {
                .flatMap(itemCategories -> backend.items())
                .flatMap(Observable::from)
                .doOnNext(Item::save)
-               .subscribe();
+               .toList()
+               .flatMap(items -> backend.sets())
+               .flatMap(Observable::from)
+               .doOnNext(ItemSet::save)
+               .subscribe(itemSet -> {
+                   L.v(itemSet.getItems());
+               });
     }
 
     @Override

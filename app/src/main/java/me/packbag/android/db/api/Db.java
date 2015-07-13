@@ -1,4 +1,4 @@
-package me.packbag.android.db;
+package me.packbag.android.db.api;
 
 import com.raizlabs.android.dbflow.annotation.Database;
 
@@ -7,5 +7,5 @@ public class Db {
 
     public static final String NAME = "packback";
 
-    public static final int VERSION = 3;
+    public static final int VERSION = 4;
 }

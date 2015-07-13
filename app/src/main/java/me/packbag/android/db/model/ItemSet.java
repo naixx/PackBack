@@ -3,63 +3,62 @@ package me.packbag.android.db.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.MoreObjects;
 import com.raizlabs.android.dbflow.annotation.Column;
-import com.raizlabs.android.dbflow.annotation.ModelContainer;
-import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
+import java.util.Collections;
 import java.util.List;
 
+import me.packbag.android.db.api.ApiPackage;
 import me.packbag.android.db.api.Db;
 
 /**
- * Created by astra on 22.05.2015.
+ * Created by astra on 13.07.2015.
  */
-@ModelContainer
 @Table(databaseName = Db.NAME)
-public class ItemCategory extends BaseModel {
+public class ItemSet extends BaseModel {
 
     @Column
     @PrimaryKey
     @JsonProperty("id")
     long id;
 
-    @Column
     @JsonProperty("name")
+    @Column
     String name;
+
+    @Column String item_ids;
 
     public long getId() {
         return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    @JsonProperty("item_ids")
+    public void setItemIds(int[] ids) {
+        item_ids = ApiPackage.intArrayToString(ids);
     }
 
-    List<Item> items;
-
-    @OneToMany(methods = { OneToMany.Method.SAVE, OneToMany.Method.DELETE },
-               variableName = "items")
     public List<Item> getItems() {
-        if (items == null) {
-            items = new Select().from(Item.class).where(Condition.column(Item_Table.CATEGORY_ITEM_CATEGORY_ID).is(id)).queryList();
+        Integer[] ids = ApiPackage.stringToIntArray(item_ids);
+        if (ids.length > 0) {
+            Integer first = ids[0];
+            Object[] o = new Object[ids.length];
+            System.arraycopy(ids, 1, o, 0, ids.length - 1);
+            return new Select().from(Item.class).where(Condition.column(Item_Table.ID).in(first, o)).queryList();
+        } else {
+            return Collections.emptyList();
         }
-        return items;
     }
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this).add("id", id).add("name", name).toString();
+        return MoreObjects.toStringHelper(this).add("id", id).add("name", name).add("item_ids", item_ids).toString();
     }
 }

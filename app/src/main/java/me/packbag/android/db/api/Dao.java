@@ -1,4 +1,4 @@
-package me.packbag.android.db;
+package me.packbag.android.db.api;
 
 import me.packbag.android.db.model.Item;
 import rx.Observable;

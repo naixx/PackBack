@@ -4,6 +4,7 @@ import java.util.List;
 
 import me.packbag.android.db.model.Item;
 import me.packbag.android.db.model.ItemCategory;
+import me.packbag.android.db.model.ItemSet;
 import retrofit.http.GET;
 import rx.Observable;
 
@@ -17,4 +18,7 @@ public interface Backend {
 
     @GET("/items")
     Observable<List<Item>> items();
+
+    @GET("/sets")
+    Observable<List<ItemSet>> sets();
 }
