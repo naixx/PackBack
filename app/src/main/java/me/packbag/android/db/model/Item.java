@@ -17,7 +17,7 @@ import java.util.Map;
 import me.packbag.android.db.api.Db;
 
 @Table(databaseName = Db.NAME)
-public class Item extends BaseModel {
+public class Item extends BaseModel implements WithId {
 
     @Column
     @PrimaryKey

@@ -20,7 +20,7 @@ import me.packbag.android.db.api.Db;
  */
 @ModelContainer
 @Table(databaseName = Db.NAME)
-public class ItemCategory extends BaseModel {
+public class ItemCategory extends BaseModel implements WithId {
 
     @Column
     @PrimaryKey

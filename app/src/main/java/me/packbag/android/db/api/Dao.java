@@ -1,6 +1,9 @@
 package me.packbag.android.db.api;
 
+import java.util.List;
+
 import me.packbag.android.db.model.Item;
+import me.packbag.android.db.model.ItemSet;
 import rx.Observable;
 
 /**
@@ -9,4 +12,6 @@ import rx.Observable;
 public interface Dao {
 
     Observable<Item> findAllProducts();
+
+    Observable<List<ItemSet>> itemSets();
 }

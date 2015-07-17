@@ -1,6 +1,11 @@
 package me.packbag.android.db.api;
 
+import com.raizlabs.android.dbflow.sql.language.Select;
+
+import java.util.List;
+
 import me.packbag.android.db.model.Item;
+import me.packbag.android.db.model.ItemSet;
 import rx.Observable;
 
 /**
@@ -11,6 +16,11 @@ public class DaoImpl implements Dao {
     @Override
     public Observable<Item> findAllProducts() {
         return null;
+    }
+
+    @Override
+    public Observable<List<ItemSet>> itemSets() {
+        return Observable.defer(() -> Observable.just(new Select().from(ItemSet.class).queryList()));
     }
 
 //	private final DatabaseDao dao;

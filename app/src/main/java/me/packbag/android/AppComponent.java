@@ -6,6 +6,7 @@ import dagger.Component;
 import me.packbag.android.db.DbModule;
 import me.packbag.android.network.Backend;
 import me.packbag.android.network.NetworkModule;
+import me.packbag.android.ui.MainActivity;
 
 @Singleton
 @Component(
@@ -13,6 +14,8 @@ import me.packbag.android.network.NetworkModule;
 public interface AppComponent {
 
     Backend backend();
+
+    void inject(MainActivity mainActivity);
 
 //	void inject(@NonNull MainActivity service);
 //

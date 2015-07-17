@@ -1,7 +1,10 @@
 package me.packbag.android.db.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.Joiner;
 import com.google.common.base.MoreObjects;
+import com.google.common.base.Splitter;
+import com.google.common.collect.FluentIterable;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
@@ -12,14 +15,15 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 import java.util.Collections;
 import java.util.List;
 
-import me.packbag.android.db.api.ApiPackage;
 import me.packbag.android.db.api.Db;
+
+import static me.packbag.android.util.Empties.emptyIfNull;
 
 /**
  * Created by astra on 13.07.2015.
  */
 @Table(databaseName = Db.NAME)
-public class ItemSet extends BaseModel {
+public class ItemSet extends BaseModel implements WithId{
 
     @Column
     @PrimaryKey
@@ -41,12 +45,13 @@ public class ItemSet extends BaseModel {
     }
 
     @JsonProperty("item_ids")
-    public void setItemIds(int[] ids) {
-        item_ids = ApiPackage.intArrayToString(ids);
+    public void setItemIds(List<Integer> ids) {
+
+        item_ids = Joiner.on(",").join(emptyIfNull(ids)).trim();
     }
 
     public List<Item> getItems() {
-        Integer[] ids = ApiPackage.stringToIntArray(item_ids);
+        Integer[] ids = FluentIterable.from(Splitter.on(",").split(item_ids)).transform(Integer::valueOf).toArray(Integer.class);
         if (ids.length > 0) {
             Integer first = ids[0];
             Object[] o = new Object[ids.length];
