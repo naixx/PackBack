@@ -3,6 +3,7 @@ package me.packbag.android.db.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Joiner;
 import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 import com.google.common.base.Splitter;
 import com.google.common.collect.FluentIterable;
 import com.raizlabs.android.dbflow.annotation.Column;
@@ -60,6 +61,23 @@ public class ItemSet extends BaseModel implements WithId{
         } else {
             return Collections.emptyList();
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof ItemSet)) {
+            return false;
+        }
+        ItemSet itemSet = (ItemSet) o;
+        return Objects.equal(id, itemSet.id) && Objects.equal(name, itemSet.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id, name);
     }
 
     @Override

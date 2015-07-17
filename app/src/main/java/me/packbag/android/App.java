@@ -22,7 +22,7 @@ public class App extends Application {
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectAll().penaltyLog().penaltyFlashScreen().build());
             StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectAll().penaltyLog().build());
             L.plant(new L.DebugTree());
-            FlowLog.setMinimumLoggingLevel(FlowLog.Level.V);
+            FlowLog.setMinimumLoggingLevel(FlowLog.Level.D);
         }
         FlowManager.init(this);
         long end = System.currentTimeMillis() - start;

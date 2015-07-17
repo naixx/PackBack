@@ -23,11 +23,15 @@ import me.packbag.android.network.Backend;
 import me.packbag.android.ui.utils.BaseAdapter;
 import me.packbag.android.util.timber.L;
 import rx.Observable;
+import rx.functions.Func2;
 
 import static me.packbag.android.util.Rx.async2ui;
 
 @EActivity(R.layout.activity_main)
 public class MainActivity extends AppCompatActivity implements BaseAdapter.InteractionListener<ItemSet> {
+
+    public static final Func2<ItemSet, ItemSet, Integer> SORT_FUNCTION = (itemSet, itemSet2) -> itemSet.getName()
+            .compareTo(itemSet2.getName());
 
     @ViewById RecyclerView recyclerView;
     @Inject   Dao          dao;
@@ -52,8 +56,10 @@ public class MainActivity extends AppCompatActivity implements BaseAdapter.Inter
                 .flatMap(items -> backend.sets())
                 .flatMap(Observable::from)
                 .doOnNext(ItemSet::save)
-                .toList();
-        fromBackend.mergeWith(dao.itemSets()).compose(async2ui()).subscribe(adapter::swapItems);
+                .toSortedList(SORT_FUNCTION);
+        fromBackend.mergeWith(dao.itemSets().flatMap(Observable::from).toSortedList(SORT_FUNCTION))
+                .compose(async2ui())
+                .subscribe(adapter::swapItems);
     }
 
     @Override
