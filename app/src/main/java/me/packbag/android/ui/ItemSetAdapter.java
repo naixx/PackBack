@@ -13,9 +13,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-import java.util.WeakHashMap;
 
 import butterknife.Bind;
 import me.packbag.android.App;
@@ -58,8 +58,8 @@ public class ItemSetAdapter extends BaseAdapter<ItemSet, ItemSetAdapter.ViewHold
             }
             Context context = itemView.getContext();
 
-            if (meta.get(item) != null && meta.get(item).url != null) {
-                loadImage(context, meta.get(item));
+            if (meta.get(item.getId()) != null && meta.get(item.getId()).url != null) {
+                loadImage(context, meta.get(item.getId()));
             } else {
                 Splashable splashable = App.get(context).component().splashable();
                 splashable.search(tag).map(imageList -> imageList.images).flatMap(splashableImages -> {
@@ -70,10 +70,10 @@ public class ItemSetAdapter extends BaseAdapter<ItemSet, ItemSetAdapter.ViewHold
                     return Observable.from(splashableImages)
                             .elementAt(new Random().nextInt(size))
                             .onErrorResumeNext(Observable.<SplashableImage>empty())
-                            .map((SplashableImage o) -> o.url);
+                            .map(o -> o.url);
                 }).compose(async2ui()).doOnNext(L::i).subscribe(url -> {
                     MetaHolder value = new MetaHolder(url);
-                    meta.put(item, value);
+                    meta.put(item.getId(), value);
                     loadImage(context, value);
                 });
             }
@@ -127,7 +127,7 @@ public class ItemSetAdapter extends BaseAdapter<ItemSet, ItemSetAdapter.ViewHold
         }
     }
 
-    private Map<ItemSet, MetaHolder> meta = new WeakHashMap<>();
+    private Map<Long, MetaHolder> meta = new HashMap<>();
 
     public ItemSetAdapter(InteractionListener<ItemSet> listener) {
         super();
@@ -136,6 +136,6 @@ public class ItemSetAdapter extends BaseAdapter<ItemSet, ItemSetAdapter.ViewHold
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_item_set, parent, false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_set, parent, false));
     }
 }

@@ -7,7 +7,8 @@ import me.packbag.android.db.DbModule;
 import me.packbag.android.network.Backend;
 import me.packbag.android.network.NetworkModule;
 import me.packbag.android.network.Splashable;
-import me.packbag.android.ui.MainActivity;
+import me.packbag.android.ui.ItemListActivity;
+import me.packbag.android.ui.ItemSetActivity;
 
 @Singleton
 @Component(
@@ -18,7 +19,9 @@ public interface AppComponent {
 
     Splashable splashable();
 
-    void inject(MainActivity mainActivity);
+    void inject(ItemSetActivity itemSetActivity);
+
+    void inject(ItemListActivity itemListActivity);
 
 //	void inject(@NonNull MainActivity service);
 //

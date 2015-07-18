@@ -1,5 +1,8 @@
 package me.packbag.android.db.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Joiner;
 import com.google.common.base.MoreObjects;
@@ -24,7 +27,7 @@ import static me.packbag.android.util.Empties.emptyIfNull;
  * Created by astra on 13.07.2015.
  */
 @Table(databaseName = Db.NAME)
-public class ItemSet extends BaseModel implements WithId{
+public class ItemSet extends BaseModel implements WithId, Parcelable {
 
     @Column
     @PrimaryKey
@@ -84,4 +87,28 @@ public class ItemSet extends BaseModel implements WithId{
     public String toString() {
         return MoreObjects.toStringHelper(this).add("id", id).add("name", name).add("item_ids", item_ids).toString();
     }
+
+    @Override
+    public int describeContents() { return 0; }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.id);
+        dest.writeString(this.name);
+        dest.writeString(this.item_ids);
+    }
+
+    public ItemSet() {}
+
+    protected ItemSet(Parcel in) {
+        this.id = in.readLong();
+        this.name = in.readString();
+        this.item_ids = in.readString();
+    }
+
+    public static final Parcelable.Creator<ItemSet> CREATOR = new Parcelable.Creator<ItemSet>() {
+        public ItemSet createFromParcel(Parcel source) {return new ItemSet(source);}
+
+        public ItemSet[] newArray(int size) {return new ItemSet[size];}
+    };
 }
