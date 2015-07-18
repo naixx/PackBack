@@ -66,7 +66,7 @@ public class Item extends BaseModel implements WithId {
     }
 
     public ItemCategory getCategory() {
-        return category.toModel();
+        return category.load();
     }
 
     @Override

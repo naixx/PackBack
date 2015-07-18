@@ -14,7 +14,7 @@ public abstract class BaseAdapter<T extends WithId, VH extends BaseViewHolder<T>
         void onClick(T itemSet);
     }
 
-    private List<T> items = new ArrayList<>();
+    protected List<T> items = new ArrayList<>();
 
     public BaseAdapter() {
         setHasStableIds(true);
