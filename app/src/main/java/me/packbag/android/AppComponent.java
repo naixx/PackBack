@@ -4,6 +4,7 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 import me.packbag.android.db.DbModule;
+import me.packbag.android.db.api.Dao;
 import me.packbag.android.network.Backend;
 import me.packbag.android.network.NetworkModule;
 import me.packbag.android.network.Splashable;
@@ -19,9 +20,13 @@ public interface AppComponent {
 
     Splashable splashable();
 
+    Dao dao();
+
     void inject(ItemSetActivity itemSetActivity);
 
     void inject(ItemListActivity itemListActivity);
+
+    void inject(ItemSetActivity.ServiceFragment serviceFragment);
 
 //	void inject(@NonNull MainActivity service);
 //

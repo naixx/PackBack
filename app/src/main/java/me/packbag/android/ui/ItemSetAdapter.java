@@ -70,7 +70,7 @@ public class ItemSetAdapter extends BaseAdapter<ItemSet, ItemSetAdapter.ViewHold
                     return Observable.from(splashableImages)
                             .elementAt(new Random().nextInt(size))
                             .onErrorResumeNext(Observable.<SplashableImage>empty())
-                            .map(o -> o.url);
+                            .map((SplashableImage o) -> o.url);
                 }).compose(async2ui()).doOnNext(L::i).subscribe(url -> {
                     MetaHolder value = new MetaHolder(url);
                     meta.put(item.getId(), value);
