@@ -26,8 +26,6 @@ public interface AppComponent {
 
     void inject(ItemListActivity itemListActivity);
 
-    void inject(ItemSetActivity.ServiceFragment serviceFragment);
-
 //	void inject(@NonNull MainActivity service);
 //
 //	void inject(@NonNull ProductsActivity productsActivity);
