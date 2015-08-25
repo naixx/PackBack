@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.github.naixx.BaseAdapter;
+import com.github.naixx.BaseViewHolder;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,13 +25,11 @@ import me.packbag.android.R;
 import me.packbag.android.db.model.ItemSet;
 import me.packbag.android.network.Splashable;
 import me.packbag.android.network.model.SplashableImage;
-import me.packbag.android.ui.utils.BaseAdapter;
-import me.packbag.android.ui.utils.BaseViewHolder;
 import me.packbag.android.util.Utils;
 import me.packbag.android.util.timber.L;
 import rx.Observable;
 
-import static me.packbag.android.util.Rx.async2ui;
+import static com.github.naixx.Rx.async2ui;
 
 /**
  * Created by astra on 17.07.2015.

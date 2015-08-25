@@ -5,20 +5,21 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.github.naixx.BaseAdapter;
+
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentByTag;
 import org.androidannotations.annotations.ViewById;
 
 import me.packbag.android.R;
 import me.packbag.android.db.model.ItemSet;
-import me.packbag.android.ui.utils.BaseAdapter;
 
-import static me.packbag.android.util.Rx.async2ui;
+import static com.github.naixx.Rx.async2ui;
 
 @EFragment(R.layout.activity_itemset)
 public class ItemSetFragment extends Fragment implements BaseAdapter.InteractionListener<ItemSet> {
 
-    @ViewById      RecyclerView                    recyclerView;
+    @ViewById      RecyclerView                   recyclerView;
     @FragmentByTag ItemSetActivity.LoaderFragment service;
 
     @Override

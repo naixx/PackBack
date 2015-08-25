@@ -1,4 +1,4 @@
-package me.packbag.android.db.model;
+package com.github.naixx;
 
 /**
  * Created by astra on 17.07.2015.

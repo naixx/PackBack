@@ -5,22 +5,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.github.naixx.BaseAdapter;
+import com.github.naixx.Bus;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
 
 import butterknife.Bind;
 import me.packbag.android.R;
 import me.packbag.android.db.model.Item;
-import me.packbag.android.ui.utils.BaseAdapter;
-import me.packbag.android.ui.utils.BaseViewHolder;
+import me.packbag.android.ui.events.TakenEvent;
+import me.packbag.android.ui.events.UselessEvent;
 
 /**
  * Created by astra on 17.07.2015.
  */
 public class ItemListAdapter extends BaseAdapter<Item, ItemListAdapter.ViewHolder> implements StickyRecyclerHeadersAdapter<ItemListAdapter.HeaderViewHolder> {
 
-    class ViewHolder extends BaseViewHolder<Item> {
+    class ViewHolder extends com.github.naixx.BaseViewHolder<Item> {
 
-        @Bind(R.id.name) TextView name;
+        @Bind(R.id.name)       TextView name;
+        @Bind(R.id.takeBtn)    View     takeBtn;
+        @Bind(R.id.uselessBtn) View     uselessBtn;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -29,10 +33,12 @@ public class ItemListAdapter extends BaseAdapter<Item, ItemListAdapter.ViewHolde
         @Override
         public void bind(Item item) {
             name.setText(item.getName());
+            takeBtn.setOnClickListener(v -> Bus.post(new TakenEvent(item)));
+            uselessBtn.setOnClickListener(v -> Bus.post(new UselessEvent(item)));
         }
     }
 
-    class HeaderViewHolder extends BaseViewHolder<String> {
+    class HeaderViewHolder extends com.github.naixx.BaseViewHolder<String> {
 
         @Bind(android.R.id.text1) TextView name;
 

@@ -2,6 +2,7 @@ package me.packbag.android.db.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.github.naixx.WithId;
 import com.google.common.base.MoreObjects;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;

@@ -1,17 +1,15 @@
-package me.packbag.android.ui.utils;
+package com.github.naixx;
 
 import android.support.v7.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import me.packbag.android.db.model.WithId;
-
-public abstract class BaseAdapter<T extends WithId, VH extends BaseViewHolder<T>> extends RecyclerView.Adapter<VH> {
+public abstract class BaseAdapter<T extends WithId, VH extends com.github.naixx.BaseViewHolder<T>> extends RecyclerView.Adapter<VH> {
 
     public interface InteractionListener<T> {
 
-        void onClick(T itemSet);
+        void onClick(T item);
     }
 
     protected List<T> items = new ArrayList<>();
