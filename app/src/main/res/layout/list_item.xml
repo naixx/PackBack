@@ -3,12 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="?listPreferredItemHeight">
+    android:background="?selectableItemBackground"
+    android:minHeight="?listPreferredItemHeight"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp">
 
     <TextView
         android:id="@+id/name"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         android:gravity="center_vertical"
         tools:text="name" />
 </RelativeLayout>
