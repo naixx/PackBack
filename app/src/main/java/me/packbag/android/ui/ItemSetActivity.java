@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.androidannotations.annotations.EActivity;
@@ -13,7 +15,10 @@ import java.util.List;
 import me.packbag.android.App;
 import me.packbag.android.db.api.Dao;
 import me.packbag.android.db.model.Item;
+import me.packbag.android.db.model.ItemInSet;
+import me.packbag.android.db.model.ItemInSet_Table;
 import me.packbag.android.db.model.ItemSet;
+import me.packbag.android.db.model.Item_Table;
 import me.packbag.android.network.Backend;
 import me.packbag.android.ui.utils.RxServiceFragment;
 import rx.Observable;
@@ -49,11 +54,44 @@ public class ItemSetActivity extends AppCompatActivity {
                         .toList()
                         .flatMap(itemCategories -> backend.items())
                         .flatMap(Observable::from)
-                        .doOnNext(Item::save)
+                        .doOnNext(serverItem -> {
+                            Item localItem = new Select().from(Item.class)
+                                    .where(Condition.column(Item_Table.SERVERID).eq(serverItem.getServerId()))
+                                    .querySingle();
+                            if (localItem != null) {
+                                localItem.setName(serverItem.getName());
+                                localItem.setCategory(serverItem.getCategory().getId());
+                                localItem.update();
+                            } else {
+                                serverItem.save();
+                            }
+                        })
                         .toList()
                         .flatMap(items -> backend.sets())
                         .flatMap(Observable::from)
-                        .doOnNext(ItemSet::save)
+                        .doOnNext(BaseModel::save)
+                        .doOnNext((ItemSet itemSet) -> {
+                            for (Long serverId : itemSet.getServerIds()) {
+                                Item item = new Select().from(Item.class)
+                                        .where(Condition.column(Item_Table.SERVERID).eq(serverId))
+                                        .querySingle();
+                                ItemInSet itemInSet = new ItemInSet();
+                                itemInSet.setItem(item.getId());
+                                itemInSet.setItemSet(itemSet.getId());
+
+                                //Where<ItemInSet> where = new Select().from(ItemInSet.class).where();
+
+                                ItemInSet is = new Select().from(ItemInSet.class)
+                                        .where(Condition.column(ItemInSet_Table.ITEM_ITEM_ID).eq(item.getId()))
+                                        .and(Condition.column(ItemInSet_Table.ITEMSET_ITEM_SET_ID).eq(itemSet.getId()))
+                                        .querySingle();
+
+                                //FIXME
+                                if (is == null) {
+                                    itemInSet.save();
+                                }
+                            }
+                        })
                         .toSortedList(SORT_FUNCTION);
                 sets = fromBackend.mergeWith(dao.itemSets().flatMap(Observable::from).toSortedList(SORT_FUNCTION))
                         .cache()

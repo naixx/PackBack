@@ -3,13 +3,12 @@ package me.packbag.android.ui;
 import java.util.List;
 
 import me.packbag.android.db.model.Item;
+import me.packbag.android.db.model.ItemStatus;
 
 /**
  * Created by astra on 25.08.2015.
  */
 interface ItemProvider {
 
-    enum Type {CURRENT, TAKEN, USELESS}
-
-    List<Item> getItems(Type type);
+    List<Item> getItems(ItemStatus itemStatus);
 }

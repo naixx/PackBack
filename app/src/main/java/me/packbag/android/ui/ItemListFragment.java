@@ -16,14 +16,15 @@ import java.util.List;
 
 import me.packbag.android.R;
 import me.packbag.android.db.model.Item;
+import me.packbag.android.db.model.ItemStatus;
 import me.packbag.android.ui.events.ItemListChangedEvent;
 
 @EFragment(R.layout.fragment_itemlist)
 public class ItemListFragment extends Fragment {
 
-    @ViewById    RecyclerView      recyclerView;
-    @FragmentArg ItemProvider.Type type;
-    private      ItemListAdapter   adapter;
+    @ViewById    RecyclerView    recyclerView;
+    @FragmentArg ItemStatus      status;
+    private      ItemListAdapter adapter;
 
     @AfterViews
     void afterViews() {
@@ -35,7 +36,7 @@ public class ItemListFragment extends Fragment {
     }
 
     private List<Item> getItems() {
-        return ((ItemProvider) getContext()).getItems(type);
+        return ((ItemProvider) getContext()).getItems(status);
     }
 
     @Override

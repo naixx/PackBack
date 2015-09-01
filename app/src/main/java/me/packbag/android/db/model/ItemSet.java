@@ -10,7 +10,9 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Splitter;
 import com.google.common.collect.FluentIterable;
+import com.google.common.collect.Lists;
 import com.raizlabs.android.dbflow.annotation.Column;
+import com.raizlabs.android.dbflow.annotation.ModelContainer;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
@@ -22,12 +24,11 @@ import java.util.List;
 
 import me.packbag.android.db.api.Db;
 
-import static me.packbag.android.util.Empties.emptyIfNull;
-
 /**
  * Created by astra on 13.07.2015.
  */
 @Table(databaseName = Db.NAME)
+@ModelContainer
 public class ItemSet extends BaseModel implements WithId, Parcelable {
 
     @Column
@@ -41,6 +42,8 @@ public class ItemSet extends BaseModel implements WithId, Parcelable {
 
     @Column String item_ids;
 
+    Long[] ids;
+
     public long getId() {
         return id;
     }
@@ -50,12 +53,16 @@ public class ItemSet extends BaseModel implements WithId, Parcelable {
     }
 
     @JsonProperty("item_ids")
-    public void setItemIds(List<Integer> ids) {
-
-        item_ids = Joiner.on(",").join(emptyIfNull(ids)).trim();
+    public void setItemIds(Long[] ids) {
+        this.ids = ids;
+        item_ids = Joiner.on(",").join(Lists.newArrayList(ids)).trim();
     }
 
-    public List<Item> getItems() {
+    public Long[] getServerIds() {
+        return ids;
+    }
+
+    public List<Item> getLocalItems() {
         Integer[] ids = FluentIterable.from(Splitter.on(",").split(item_ids)).transform(Integer::valueOf).toArray(Integer.class);
         if (ids.length > 0) {
             Integer first = ids[0];

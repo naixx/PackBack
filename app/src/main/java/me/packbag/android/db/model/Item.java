@@ -1,12 +1,15 @@
 package me.packbag.android.db.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.github.naixx.WithId;
 import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
+import com.raizlabs.android.dbflow.annotation.ModelContainer;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
@@ -18,12 +21,17 @@ import java.util.Map;
 import me.packbag.android.db.api.Db;
 
 @Table(databaseName = Db.NAME)
+@ModelContainer
 public class Item extends BaseModel implements WithId {
 
     @Column
-    @PrimaryKey
-    @JsonProperty("id")
+    @PrimaryKey(autoincrement = true)
+    @JsonIgnore
     long id;
+
+    @Column
+    @JsonProperty("id")
+    long serverId;
 
     @JsonProperty("name")
     @Column
@@ -37,12 +45,17 @@ public class Item extends BaseModel implements WithId {
             saveForeignKeyModel = false)
     ForeignKeyContainer<ItemCategory> category;
 
+    @Override
     public long getId() {
         return id;
     }
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public long getServerId() {
+        return serverId;
     }
 
     public String getName() {
@@ -72,6 +85,21 @@ public class Item extends BaseModel implements WithId {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this).add("id", id).add("name", name).toString();
+        return MoreObjects.toStringHelper(this).add("id", id).add("serverId", serverId).add("name", name).toString();
+    }
+
+    @Override
+    public int hashCode() {return Objects.hashCode(id);}
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final Item other = (Item) obj;
+        return Objects.equal(this.id, other.id);
     }
 }

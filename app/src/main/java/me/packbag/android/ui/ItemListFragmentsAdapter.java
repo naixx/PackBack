@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import me.packbag.android.R;
+import me.packbag.android.db.model.ItemStatus;
 
 public class ItemListFragmentsAdapter extends FragmentPagerAdapter {
 
@@ -26,11 +27,11 @@ public class ItemListFragmentsAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 0) {
-            return ItemListFragment_.builder().type(ItemProvider.Type.CURRENT).build();
+            return ItemListFragment_.builder().status(ItemStatus.CURRENT).build();
         } else if (position == 1) {
-            return ItemListFragment_.builder().type(ItemProvider.Type.TAKEN).build();
+            return ItemListFragment_.builder().status(ItemStatus.TAKEN).build();
         } else if (position == 2) {
-            return ItemListFragment_.builder().type(ItemProvider.Type.USELESS).build();
+            return ItemListFragment_.builder().status(ItemStatus.USELESS).build();
         } else {
             throw new IllegalArgumentException("Wrong position " + position);
         }
