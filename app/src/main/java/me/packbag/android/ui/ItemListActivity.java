@@ -32,17 +32,6 @@ import static com.google.common.collect.FluentIterable.from;
 @EActivity(R.layout.activity_itemlist)
 public class ItemListActivity extends AppCompatActivity implements ItemProvider {
 
-    private static class TypedItem {
-
-        public final Item       item;
-        public       ItemStatus itemStatus;
-
-        TypedItem(Item item, ItemStatus itemStatus) {
-            this.item = item;
-            this.itemStatus = itemStatus;
-        }
-    }
-
     @ViewById TabLayout tabs;
     @ViewById ViewPager viewPager;
 
