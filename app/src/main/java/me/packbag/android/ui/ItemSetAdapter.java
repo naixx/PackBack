@@ -50,11 +50,15 @@ public class ItemSetAdapter extends BaseAdapter<ItemSet, ItemSetAdapter.ViewHold
             name.setText(item.getName());
             itemView.setOnClickListener(v -> listener.onClick(item));
             String tag = "";
-            if (item.getName().toLowerCase().contains("пеший")) {
+            String name = item.getName().toLowerCase();
+            if (name.contains("пеший") || name.contains("hik") || name.contains("mount") || name.contains("горн")) {
                 tag = "mountains";
             }
-            if (item.getName().toLowerCase().contains("водный")) {
+            if (name.contains("водный") || name.contains("water") || name.contains("raft")) {
                 tag = "water";
+            }
+            if (name.contains("аптеч")) {
+                tag = "medical";
             }
             Context context = itemView.getContext();
 
