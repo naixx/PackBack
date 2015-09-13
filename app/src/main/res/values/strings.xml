@@ -7,5 +7,8 @@
     <string name="tab_title_current">Вещи</string>
     <string name="tab_title_taken">Берём</string>
     <string name="tab_title_useless">Не берём</string>
+    <string name="title_activity_add_item">AddItem</string>
+    <string name="list_item_category_user">Пользовательская</string>
+
 
 </resources>

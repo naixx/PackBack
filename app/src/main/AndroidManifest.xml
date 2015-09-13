@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    package="me.packbag.android"
+<manifest package="me.packbag.android"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -20,6 +19,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.ItemListActivity_" />
+        <activity
+            android:name=".ui.NewItemActivity_"
+            android:label="@string/title_activity_add_item"></activity>
     </application>
 
 </manifest>

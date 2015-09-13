@@ -25,9 +25,9 @@ public class NetworkModule {
     @Named("hikapro")
     RestAdapter provideRestAdapter() {
         return new RestAdapter.Builder().setEndpoint("http://hikapro.com/api/v1/backpack")
-                .setConverter(new JacksonConverter())
-                .setLogLevel(BuildConfig.DEBUG ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE)
-                .build();
+            .setConverter(new JacksonConverter())
+            .setLogLevel(BuildConfig.DEBUG ? RestAdapter.LogLevel.BASIC : RestAdapter.LogLevel.NONE)
+            .build();
     }
 
     @Provides
@@ -36,9 +36,9 @@ public class NetworkModule {
     @Named("splash")
     RestAdapter provideRestSplashable() {
         return new RestAdapter.Builder().setEndpoint("http://www.splashbase.co/api/v1")
-                .setConverter(new JacksonConverter(new ObjectMapper().configure(JsonGenerator.Feature.IGNORE_UNKNOWN, true)))
-                .setLogLevel(BuildConfig.DEBUG ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE)
-                .build();
+            .setConverter(new JacksonConverter(new ObjectMapper().configure(JsonGenerator.Feature.IGNORE_UNKNOWN, true)))
+            .setLogLevel(BuildConfig.DEBUG ? RestAdapter.LogLevel.BASIC : RestAdapter.LogLevel.NONE)
+            .build();
     }
 
     @Provides

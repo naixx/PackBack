@@ -23,6 +23,8 @@ import me.packbag.android.db.api.Db;
 @Table(databaseName = Db.NAME)
 public class ItemCategory extends BaseModel implements WithId {
 
+    public static final long USER = -1;
+
     @Column
     @PrimaryKey
     @JsonProperty("id")

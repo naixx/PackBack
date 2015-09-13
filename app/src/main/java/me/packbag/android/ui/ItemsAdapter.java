@@ -12,13 +12,14 @@ import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
 import butterknife.Bind;
 import me.packbag.android.R;
 import me.packbag.android.db.model.Item;
+import me.packbag.android.db.model.ItemCategory;
 import me.packbag.android.ui.events.TakenEvent;
 import me.packbag.android.ui.events.UselessEvent;
 
 /**
  * Created by astra on 17.07.2015.
  */
-public class ItemListAdapter extends BaseAdapter<Item, ItemListAdapter.ViewHolder> implements StickyRecyclerHeadersAdapter<ItemListAdapter.HeaderViewHolder> {
+public class ItemsAdapter extends BaseAdapter<Item, ItemsAdapter.ViewHolder> implements StickyRecyclerHeadersAdapter<ItemsAdapter.HeaderViewHolder> {
 
     class ViewHolder extends com.github.naixx.BaseViewHolder<Item> {
 
@@ -59,7 +60,7 @@ public class ItemListAdapter extends BaseAdapter<Item, ItemListAdapter.ViewHolde
 
     @Override
     public long getHeaderId(int i) {
-        return items.get(i).getCategory().getId();
+        return items.get(i).getCategory().getId() + 2; //we add 2 because we have default category with id -1
     }
 
     @Override
@@ -69,6 +70,11 @@ public class ItemListAdapter extends BaseAdapter<Item, ItemListAdapter.ViewHolde
 
     @Override
     public void onBindHeaderViewHolder(HeaderViewHolder headerViewHolder, int i) {
-        headerViewHolder.bind(items.get(i).getCategory().getName());
+        ItemCategory cat = items.get(i).getCategory();
+        if (cat.getId() == -1) {
+            headerViewHolder.bind(headerViewHolder.itemView.getContext().getString(R.string.list_item_category_user));
+        } else {
+            headerViewHolder.bind(cat.getName());
+        }
     }
 }

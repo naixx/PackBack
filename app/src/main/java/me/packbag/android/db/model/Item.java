@@ -1,5 +1,7 @@
 package me.packbag.android.db.model;
 
+import android.support.annotation.NonNull;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
@@ -39,10 +41,11 @@ public class Item extends BaseModel implements WithId {
 
     @Column
     @ForeignKey(
-            references = { @ForeignKeyReference(columnName = "item_category_id",
-                                                columnType = Long.class,
-                                                foreignColumnName = "id") },
-            saveForeignKeyModel = false)
+        references = { @ForeignKeyReference(
+            columnName = "item_category_id",
+            columnType = Long.class,
+            foreignColumnName = "id") },
+        saveForeignKeyModel = false)
     ForeignKeyContainer<ItemCategory> category;
 
     @Override
@@ -79,6 +82,7 @@ public class Item extends BaseModel implements WithId {
         category.setData(keys);
     }
 
+    @NonNull
     public ItemCategory getCategory() {
         return category.load();
     }

@@ -1,9 +1,12 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    extensions.kotlinVersion = "0.12.613"
+    extensions.kotlinVersion = "+"
     repositories {
         jcenter()
+        maven {
+            url 'http://oss.sonatype.org/content/repositories/snapshots'
+        }
     }
     dependencies {
         classpath "com.android.tools.build:gradle:1.3.0"
@@ -11,6 +14,7 @@ buildscript {
         classpath 'me.tatarka:gradle-retrolambda:3.1.0'
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.9'
         classpath "com.android.databinding:dataBinder:1.0-rc1"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     }
 }
 
@@ -19,6 +23,9 @@ apply plugin: 'com.github.ben-manes.versions'
 allprojects {
     repositories {
         jcenter()
+        maven {
+            url 'http://oss.sonatype.org/content/repositories/snapshots'
+        }
     }
 }
 

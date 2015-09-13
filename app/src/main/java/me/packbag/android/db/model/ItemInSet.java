@@ -1,6 +1,7 @@
 package me.packbag.android.db.model;
 
 import com.github.naixx.WithId;
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
@@ -26,18 +27,20 @@ public class ItemInSet extends BaseModel implements WithId {
 
     @Column
     @ForeignKey(
-            references = { @ForeignKeyReference(columnName = "item_set_id",
-                                                columnType = Long.class,
-                                                foreignColumnName = "id") },
-            saveForeignKeyModel = false)
+        references = { @ForeignKeyReference(
+            columnName = "item_set_id",
+            columnType = Long.class,
+            foreignColumnName = "id") },
+        saveForeignKeyModel = false)
     ForeignKeyContainer<ItemSet> itemSet;
 
     @Column
     @ForeignKey(
-            references = { @ForeignKeyReference(columnName = "item_id",
-                                                columnType = Long.class,
-                                                foreignColumnName = "id") },
-            saveForeignKeyModel = false)
+        references = { @ForeignKeyReference(
+            columnName = "item_id",
+            columnType = Long.class,
+            foreignColumnName = "id") },
+        saveForeignKeyModel = false)
     ForeignKeyContainer<Item> item;
 
     @Column ItemStatus status = ItemStatus.CURRENT;
@@ -87,5 +90,10 @@ public class ItemInSet extends BaseModel implements WithId {
         }
         final ItemInSet other = (ItemInSet) obj;
         return Objects.equal(this.id, other.id);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this).add("id", id).add("itemSet", itemSet).add("item", item).add("status", status).toString();
     }
 }

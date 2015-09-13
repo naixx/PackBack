@@ -17,6 +17,7 @@ import java.util.List;
 import me.packbag.android.App;
 import me.packbag.android.db.api.Dao;
 import me.packbag.android.db.model.Item;
+import me.packbag.android.db.model.ItemCategory;
 import me.packbag.android.db.model.ItemInSet;
 import me.packbag.android.db.model.ItemInSet_Table;
 import me.packbag.android.db.model.ItemSet;
@@ -62,7 +63,7 @@ public class ItemSetActivity extends AppCompatActivity {
 
                 Observable<List<ItemSet>> fromBackend = backend.itemCategories()
                         .flatMap(Observable::from)
-                        .doOnNext(BaseModel::save).toList() //TODO use flatMap to cache items
+                        .doOnNext(ItemCategory::save).toList() //TODO use flatMap to cache items
                         .flatMap(itemCategories -> backend.items())
                         .flatMap(Observable::from)
                         .doOnNext(serverItem -> {
@@ -74,7 +75,7 @@ public class ItemSetActivity extends AppCompatActivity {
                                 localItem.setCategory(serverItem.getCategory().getId());
                                 localItem.update();
                             } else {
-                                serverItem.save();
+                                serverItem.insert();
                             }
                         })
                         .toList()
