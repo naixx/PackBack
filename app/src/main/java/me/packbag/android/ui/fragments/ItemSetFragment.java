@@ -1,4 +1,4 @@
-package me.packbag.android.ui;
+package me.packbag.android.ui.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,6 +13,9 @@ import org.androidannotations.annotations.ViewById;
 
 import me.packbag.android.R;
 import me.packbag.android.db.model.ItemSet;
+import me.packbag.android.ui.activities.ItemListActivity_;
+import me.packbag.android.ui.activities.ItemSetActivity;
+import me.packbag.android.ui.adapters.ItemSetAdapter;
 
 import static com.github.naixx.Rx.async2ui;
 
@@ -28,7 +31,7 @@ public class ItemSetFragment extends Fragment implements BaseAdapter.Interaction
         ItemSetAdapter adapter = new ItemSetAdapter(this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        service.sets.compose(async2ui()).subscribe(adapter::swapItems);
+        service.getSets().compose(async2ui()).subscribe(adapter::swapItems);
     }
 
     @Override

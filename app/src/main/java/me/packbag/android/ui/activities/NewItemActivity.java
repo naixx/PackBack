@@ -1,4 +1,4 @@
-package me.packbag.android.ui;
+package me.packbag.android.ui.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.widget.EditText;

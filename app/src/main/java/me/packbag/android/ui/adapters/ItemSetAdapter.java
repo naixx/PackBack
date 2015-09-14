@@ -1,4 +1,4 @@
-package me.packbag.android.ui;
+package me.packbag.android.ui.adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -24,7 +24,7 @@ import butterknife.Bind;
 import me.packbag.android.App;
 import me.packbag.android.R;
 import me.packbag.android.db.model.ItemSet;
-import me.packbag.android.network.Splashable;
+import me.packbag.android.network.api.Splashable;
 import me.packbag.android.network.model.SplashableImage;
 import me.packbag.android.util.Utils;
 import rx.Observable;

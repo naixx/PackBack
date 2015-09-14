@@ -10,6 +10,8 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import me.packbag.android.BuildConfig;
+import me.packbag.android.network.api.Backend;
+import me.packbag.android.network.api.Splashable;
 import retrofit.RestAdapter;
 import retrofit.converter.JacksonConverter;
 

@@ -1,4 +1,4 @@
-package me.packbag.android.ui;
+package me.packbag.android.ui.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,6 +19,8 @@ import java.util.List;
 import me.packbag.android.R;
 import me.packbag.android.db.model.Item;
 import me.packbag.android.db.model.ItemStatus;
+import me.packbag.android.ui.ItemProvider;
+import me.packbag.android.ui.adapters.ItemsAdapter;
 import me.packbag.android.ui.events.ItemListChangedEvent;
 
 @EFragment(R.layout.fragment_itemlist)

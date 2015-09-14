@@ -1,4 +1,4 @@
-package me.packbag.android.network;
+package me.packbag.android.network.api;
 
 import me.packbag.android.network.model.SplashableImage;
 import retrofit.http.GET;

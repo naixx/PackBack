@@ -1,4 +1,4 @@
-package me.packbag.android.ui;
+package me.packbag.android.ui.adapters;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import me.packbag.android.R;
 import me.packbag.android.db.model.ItemStatus;
+import me.packbag.android.ui.fragments.ItemListFragment_;
 
 public class ItemListFragmentsAdapter extends FragmentPagerAdapter {
 

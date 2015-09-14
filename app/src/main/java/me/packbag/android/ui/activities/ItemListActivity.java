@@ -1,4 +1,4 @@
-package me.packbag.android.ui;
+package me.packbag.android.ui.activities;
 
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -28,6 +28,8 @@ import me.packbag.android.db.model.ItemInSet;
 import me.packbag.android.db.model.ItemInSet_Table;
 import me.packbag.android.db.model.ItemSet;
 import me.packbag.android.db.model.ItemStatus;
+import me.packbag.android.ui.ItemProvider;
+import me.packbag.android.ui.adapters.ItemListFragmentsAdapter;
 import me.packbag.android.ui.events.ItemListChangedEvent;
 import me.packbag.android.ui.events.TakenEvent;
 import me.packbag.android.ui.events.UselessEvent;

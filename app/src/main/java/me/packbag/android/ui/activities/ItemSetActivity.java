@@ -1,4 +1,4 @@
-package me.packbag.android.ui;
+package me.packbag.android.ui.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -22,7 +22,8 @@ import me.packbag.android.db.model.ItemInSet;
 import me.packbag.android.db.model.ItemInSet_Table;
 import me.packbag.android.db.model.ItemSet;
 import me.packbag.android.db.model.Item_Table;
-import me.packbag.android.network.Backend;
+import me.packbag.android.network.api.Backend;
+import me.packbag.android.ui.fragments.ItemSetFragment_;
 import me.packbag.android.ui.utils.RxServiceFragment;
 import rx.Observable;
 import rx.functions.Func2;
@@ -53,6 +54,10 @@ public class ItemSetActivity extends AppCompatActivity {
     public static class LoaderFragment extends RxServiceFragment {
 
         Observable<List<ItemSet>> sets;
+
+        public Observable<List<ItemSet>> getSets() {
+            return sets;
+        }
 
         @Override
         public void onAttach(Activity activity) {

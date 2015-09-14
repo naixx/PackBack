@@ -1,4 +1,4 @@
-package me.packbag.android.network;
+package me.packbag.android.network.api;
 
 import java.util.List;
 

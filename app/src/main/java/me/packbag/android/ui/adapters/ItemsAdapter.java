@@ -1,4 +1,4 @@
-package me.packbag.android.ui;
+package me.packbag.android.ui.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
