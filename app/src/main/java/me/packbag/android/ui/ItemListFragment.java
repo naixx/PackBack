@@ -53,12 +53,6 @@ public class ItemListFragment extends Fragment {
         Bus.unregister(this);
     }
 
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        onEvent(null);
-//    }
-
     @Trace
     public void onEvent(ItemListChangedEvent event) {
         adapter.swapItems(getItems());

@@ -3,9 +3,11 @@ package me.packbag.android.ui;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.github.naixx.BaseAdapter;
+import com.github.naixx.BaseViewHolder;
 import com.github.naixx.Bus;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
 
@@ -21,11 +23,11 @@ import me.packbag.android.ui.events.UselessEvent;
  */
 public class ItemsAdapter extends BaseAdapter<Item, ItemsAdapter.ViewHolder> implements StickyRecyclerHeadersAdapter<ItemsAdapter.HeaderViewHolder> {
 
-    class ViewHolder extends com.github.naixx.BaseViewHolder<Item> {
+    class ViewHolder extends BaseViewHolder<Item> {
 
-        @Bind(R.id.name)       TextView name;
-        @Bind(R.id.takeBtn)    View     takeBtn;
-        @Bind(R.id.uselessBtn) View     uselessBtn;
+        @Bind(R.id.name)    TextView name;
+        @Bind(R.id.takeBtn) View     takeBtn;
+        @Bind(R.id.moreBtn) View     moreBtn;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -35,7 +37,24 @@ public class ItemsAdapter extends BaseAdapter<Item, ItemsAdapter.ViewHolder> imp
         public void bind(Item item) {
             name.setText(item.getName());
             takeBtn.setOnClickListener(v -> Bus.post(new TakenEvent(item)));
-            uselessBtn.setOnClickListener(v -> Bus.post(new UselessEvent(item)));
+            moreBtn.setOnClickListener(v -> {
+                showPopup(v, item);
+            });
+        }
+
+        private void showPopup(View v, Item item) {
+            PopupMenu popup = new PopupMenu(v.getContext(), v);
+            popup.inflate(R.menu.item_more_actions);
+            popup.setOnMenuItemClickListener(menuItem -> {
+                switch (menuItem.getItemId()) {
+                    case R.id.action_useless:
+                        Bus.post(new UselessEvent(item));
+                        return true;
+                    default:
+                        return false;
+                }
+            });
+            popup.show();
         }
     }
 

@@ -5,10 +5,10 @@ import android.content.Context;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
 
+import com.github.naixx.L;
 import com.raizlabs.android.dbflow.config.FlowLog;
 import com.raizlabs.android.dbflow.config.FlowManager;
 
-import me.packbag.android.util.timber.L;
 
 public class App extends Application {
 
