@@ -37,9 +37,7 @@ public class ItemsAdapter extends BaseAdapter<Item, ItemsAdapter.ViewHolder> imp
         public void bind(Item item) {
             name.setText(item.getName());
             takeBtn.setOnClickListener(v -> Bus.post(new TakenEvent(item)));
-            moreBtn.setOnClickListener(v -> {
-                showPopup(v, item);
-            });
+            moreBtn.setOnClickListener(v -> showPopup(v, item));
         }
 
         private void showPopup(View v, Item item) {
