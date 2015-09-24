@@ -1,6 +1,7 @@
 package me.packbag.android.db.api;
 
 import com.raizlabs.android.dbflow.sql.builder.Condition;
+import com.raizlabs.android.dbflow.sql.language.OrderBy;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.sql.language.Update;
 import com.raizlabs.android.dbflow.sql.language.Where;
@@ -9,6 +10,8 @@ import java.util.List;
 
 import javax.inject.Singleton;
 
+import me.packbag.android.db.model.ItemCategory;
+import me.packbag.android.db.model.ItemCategory_Table;
 import me.packbag.android.db.model.ItemInSet;
 import me.packbag.android.db.model.ItemInSet_Table;
 import me.packbag.android.db.model.ItemSet;
@@ -30,6 +33,14 @@ public class Dao {
         return Single.create(singleSubscriber -> {
             singleSubscriber.onSuccess(new Select().from(ItemInSet.class)
                     .where(Condition.column(ItemInSet_Table.ITEMSET_ITEM_SET_ID).eq(itemSet.getId()))
+                    .queryList());
+        });
+    }
+
+    public Single<List<ItemCategory>> categories(ItemSet itemSet) {
+        return Single.create(singleSubscriber -> {
+            singleSubscriber.onSuccess(new Select().from(ItemCategory.class)
+                    .orderBy(OrderBy.columns(ItemCategory_Table.ID).ascending())
                     .queryList());
         });
     }

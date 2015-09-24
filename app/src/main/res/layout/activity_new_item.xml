@@ -14,4 +14,11 @@
         android:layout_height="wrap_content"
         tools:text="Item" />
 
+    <android.support.v7.widget.AppCompatSpinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/name"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>
