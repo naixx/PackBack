@@ -11,6 +11,7 @@ import me.packbag.android.db.model.ItemInSet;
 import me.packbag.android.db.model.ItemInSet_Table;
 import me.packbag.android.db.model.ItemSet;
 import rx.Observable;
+import rx.Single;
 
 /**
  * Created by astra on 22.05.2015.
@@ -22,9 +23,11 @@ public class Dao {
         return Observable.defer(() -> Observable.just(new Select().from(ItemSet.class).queryList()));
     }
 
-    public Observable<List<ItemInSet>> itemsInSets(ItemSet itemSet) {
-        return Observable.defer(() -> Observable.just(new Select().from(ItemInSet.class)
-            .where(Condition.column(ItemInSet_Table.ITEMSET_ITEM_SET_ID).eq(itemSet.getId()))
-            .queryList()));
+    public Single<List<ItemInSet>> itemsInSets(ItemSet itemSet) {
+        return Single.create(singleSubscriber -> {
+            singleSubscriber.onSuccess(new Select().from(ItemInSet.class)
+                    .where(Condition.column(ItemInSet_Table.ITEMSET_ITEM_SET_ID).eq(itemSet.getId()))
+                    .queryList());
+        });
     }
 }

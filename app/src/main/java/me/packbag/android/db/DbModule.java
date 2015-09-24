@@ -1,16 +1,22 @@
 package me.packbag.android.db;
 
+import android.support.annotation.NonNull;
+
+import javax.inject.Singleton;
+
 import dagger.Module;
+import dagger.Provides;
+import me.packbag.android.db.api.Dao;
 
 @Module
 public class DbModule {
 
-//    @Provides
-//    @Singleton
-//    @NonNull
-//    Dao provideDao() {
-//        return new DaoImpl();
-//    }
+    @Provides
+    @Singleton
+    @NonNull
+    Dao provideDao() {
+        return new Dao();
+    }
 
 //    @Provides
 //    @NonNull

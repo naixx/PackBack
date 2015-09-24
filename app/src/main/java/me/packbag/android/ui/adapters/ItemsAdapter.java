@@ -34,7 +34,7 @@ public class ItemsAdapter extends BaseAdapter<Item, ItemsAdapter.ViewHolder> imp
         }
 
         @Override
-        public void bind(Item item) {
+        public void bind(Item item, int position) {
             name.setText(item.getName());
             takeBtn.setOnClickListener(v -> Bus.post(new TakenEvent(item)));
             moreBtn.setOnClickListener(v -> showPopup(v, item));
@@ -65,7 +65,7 @@ public class ItemsAdapter extends BaseAdapter<Item, ItemsAdapter.ViewHolder> imp
         }
 
         @Override
-        public void bind(String item) {
+        public void bind(String item, int position) {
             name.setText(item);
         }
     }
@@ -86,12 +86,12 @@ public class ItemsAdapter extends BaseAdapter<Item, ItemsAdapter.ViewHolder> imp
     }
 
     @Override
-    public void onBindHeaderViewHolder(HeaderViewHolder headerViewHolder, int i) {
-        ItemCategory cat = items.get(i).getCategory();
+    public void onBindHeaderViewHolder(HeaderViewHolder headerViewHolder, int position) {
+        ItemCategory cat = items.get(position).getCategory();
         if (cat.getId() == -1) {
-            headerViewHolder.bind(headerViewHolder.itemView.getContext().getString(R.string.list_item_category_user));
+            headerViewHolder.bind(headerViewHolder.itemView.getContext().getString(R.string.list_item_category_user), position);
         } else {
-            headerViewHolder.bind(cat.getName());
+            headerViewHolder.bind(cat.getName(), position);
         }
     }
 }

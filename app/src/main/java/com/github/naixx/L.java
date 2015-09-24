@@ -65,6 +65,10 @@ public class L {
         Timber.i("");
     }
 
+    public static void i(Object o) {
+        Timber.i(String.valueOf(o));
+    }
+
     /**
      * Log a warning message with optional format args.
      */

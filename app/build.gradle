@@ -39,6 +39,7 @@ android {
 apt {
     arguments {
         androidManifestFile variant.outputs[0].processResources.manifestFile
+        trace true
     }
 }
 //kapt {
@@ -65,6 +66,7 @@ dependencies {
     compile 'com.google.dagger:dagger:2.0'
     apt 'com.google.dagger:dagger-compiler:2.0'
     compile 'io.reactivex:rxandroid:0.24.0'
+    compile 'io.reactivex:rxjava:1.0.13'
     compile 'com.jakewharton.timber:timber:2.2.2'
     compile 'com.google.guava:guava:18.0'
     compile('com.mikepenz:materialdrawer:2.9.8@aar') {

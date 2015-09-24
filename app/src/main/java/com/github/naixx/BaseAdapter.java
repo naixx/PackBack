@@ -25,7 +25,7 @@ public abstract class BaseAdapter<T extends WithId, VH extends com.github.naixx.
 
     @Override
     public void onBindViewHolder(VH holder, int position) {
-        holder.bind(items.get(position));
+        holder.bind(items.get(position), position);
     }
 
     @Override

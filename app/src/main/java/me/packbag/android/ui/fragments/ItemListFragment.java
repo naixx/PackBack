@@ -22,6 +22,7 @@ import me.packbag.android.db.model.ItemStatus;
 import me.packbag.android.ui.ItemProvider;
 import me.packbag.android.ui.adapters.ItemsAdapter;
 import me.packbag.android.ui.events.ItemListChangedEvent;
+import rx.Observable;
 
 @EFragment(R.layout.fragment_itemlist)
 public class ItemListFragment extends Fragment {
@@ -35,10 +36,10 @@ public class ItemListFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addItemDecoration(new StickyRecyclerHeadersDecoration(adapter));
-        adapter.swapItems(getItems());
+        getItems().subscribe(adapter::swapItems);
     }
 
-    private List<Item> getItems() {
+    private Observable<List<Item>> getItems() {
         return ((ItemProvider) getContext()).getItems(status);
     }
 
@@ -56,7 +57,7 @@ public class ItemListFragment extends Fragment {
     }
 
     @Trace
-    public void onEvent(ItemListChangedEvent event) {
-        adapter.swapItems(getItems());
+    public void onEventMainThread(ItemListChangedEvent event) {
+        getItems().subscribe(adapter::swapItems);
     }
 }

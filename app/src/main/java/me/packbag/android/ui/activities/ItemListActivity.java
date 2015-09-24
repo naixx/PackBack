@@ -6,8 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.github.naixx.Bus;
 import com.github.naixx.L;
-import com.google.common.base.Function;
 import com.google.common.collect.Ordering;
+import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -60,27 +60,20 @@ public class ItemListActivity extends AppCompatActivity implements ItemProvider 
         loadItems();
     }
 
-    //use BehaviourSubject
     private void loadItems() {
-        dao.itemsInSets(itemSet).subscribe(typedItems);
-
-        //typedItems = FluentIterable.from(itemInSets).toSortedList();
-        //L.e(typedItems.size());
+        dao.itemsInSets(itemSet).subscribe(typedItems::onNext);
     }
 
     @Override
     @Trace
     public Observable<List<Item>> getItems(ItemStatus itemStatus) {
-        Function<Item, Long> function = Item::getId;
-        ;
-
         return typedItems.flatMap((List<ItemInSet> itemInSets) -> {
             return Observable.from(itemInSets)
-                .filter(input -> input.getStatus() == itemStatus)
-                .map(ItemInSet::getItem)
-                .toSortedList((item, item2) -> {
-                    return Ordering.natural().onResultOf((Item item1) -> item1.getCategory().getId()).compare(item, item2);
-                });
+                    .filter(input -> input.getStatus() == itemStatus)
+                    .map(ItemInSet::getItem)
+                    .toSortedList((item, item2) -> {
+                        return Ordering.natural().onResultOf((Item item1) -> item1.getCategory().getId()).compare(item, item2);
+                    });
         });
     }
 
@@ -96,24 +89,24 @@ public class ItemListActivity extends AppCompatActivity implements ItemProvider 
         Bus.unregister(this);
     }
 
+    @SuppressWarnings("unused")
     public void onEvent(TakenEvent event) {
-        from(typedItems).firstMatch(input -> input.getItem().equals(event.item))
-            .transform(input1 -> input1.setStatus(ItemStatus.TAKEN))
-            .transform(it -> {
-                it.async().save();
-                return 0;
-            });
-        Bus.post(new ItemListChangedEvent());
+        changeTypedItemStatus(event.item, ItemStatus.TAKEN);
     }
 
+    @SuppressWarnings("unused")
     public void onEvent(UselessEvent event) {
-        from(typedItems).firstMatch(input -> input.getItem().equals(event.item))
-            .transform(input1 -> input1.setStatus(ItemStatus.USELESS))
-            .transform(it -> {
-                it.async().save();
-                return 0;
-            });
-        Bus.post(new ItemListChangedEvent());
+        changeTypedItemStatus(event.item, ItemStatus.USELESS);
+    }
+
+    private void changeTypedItemStatus(Item item, ItemStatus itemStatus) {
+        typedItems.take(1)
+                .flatMap(Observable::from)
+                .first(input -> input.getItem().getId() == item.getId())
+                .doOnNext(input1 -> input1.setStatus(itemStatus))
+                .doOnNext(BaseModel::save)
+                .toList()
+                .subscribe(L::i, L::e, () -> Bus.post(new ItemListChangedEvent()));
     }
 
     @OptionsItem(R.id.action_new_item)
@@ -125,6 +118,5 @@ public class ItemListActivity extends AppCompatActivity implements ItemProvider 
     void onItemAdded() {
         L.i();
         loadItems();
-        Bus.post(new ItemListChangedEvent());
     }
 }

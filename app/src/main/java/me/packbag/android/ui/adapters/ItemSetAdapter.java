@@ -46,7 +46,7 @@ public class ItemSetAdapter extends BaseAdapter<ItemSet, ItemSetAdapter.ViewHold
         }
 
         @Override
-        public void bind(ItemSet item) {
+        public void bind(ItemSet item, int position) {
             name.setText(item.getName());
             itemView.setOnClickListener(v -> listener.onClick(item));
             String tag = "";
