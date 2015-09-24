@@ -10,5 +10,7 @@
     <string name="title_activity_add_item">AddItem</string>
     <string name="list_item_category_user">Пользовательская</string>
     <string name="popup_menu_useless">Не берём</string>
+    <string name="menu_add_item">Add</string>
+    <string name="menu_clear_items">Clear items</string>
 
 </resources>

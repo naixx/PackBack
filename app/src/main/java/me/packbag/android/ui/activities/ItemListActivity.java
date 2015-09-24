@@ -66,13 +66,14 @@ public class ItemListActivity extends AppCompatActivity implements ItemProvider 
     }
 
     private void countStatusedItemsForTitles(ItemListFragmentsAdapter adapter) {
-        itemStatusChanged.flatMap(i -> typedItems.flatMap(itemInSets -> {
-            Observable<GroupedObservable<ItemStatus, ItemInSet>> go = Observable.from(itemInSets)
-                    .groupBy(itemInSet -> itemInSet.getStatus());
-            return go.flatMap((GroupedObservable<ItemStatus, ItemInSet> obs) -> {
-                return obs.count().map((Integer count) -> new ItemCount(obs.getKey(), count));
-            }).toList();
-        })).subscribe((List<ItemCount> pairs) -> {
+        itemStatusChanged.flatMap(i -> //
+                typedItems.flatMap(itemInSets -> {
+                    Observable<GroupedObservable<ItemStatus, ItemInSet>> go = Observable.from(itemInSets)
+                            .groupBy(itemInSet -> itemInSet.getStatus());
+                    return go.flatMap((GroupedObservable<ItemStatus, ItemInSet> obs) -> {
+                        return obs.count().map((Integer count) -> new ItemCount(obs.getKey(), count));
+                    }).toList();
+                })).subscribe((List<ItemCount> pairs) -> {
             L.v(pairs);
             adapter.onEvent(pairs);
             updateTabTitles(adapter);
@@ -116,7 +117,6 @@ public class ItemListActivity extends AppCompatActivity implements ItemProvider 
 
     @SuppressWarnings("unused")
     public void onEvent(TakenEvent event) {
-
         changeTypedItemStatus(event.getItem(), ItemStatus.TAKEN);
     }
 
@@ -141,6 +141,13 @@ public class ItemListActivity extends AppCompatActivity implements ItemProvider 
     @OptionsItem(R.id.action_new_item)
     void onNewItem() {
         NewItemActivity_.intent(this).itemSet(itemSet).startForResult(REQUEST_CODE_NEW_ITEM);
+    }
+
+    @OptionsItem(R.id.action_clear_items)
+    void onClearItems() {
+        dao.clearItems(itemSet);
+        loadItems();
+        typedItems.take(1).subscribe(itemInSets -> viewPager.setCurrentItem(0));
     }
 
     @OnActivityResult(REQUEST_CODE_NEW_ITEM)

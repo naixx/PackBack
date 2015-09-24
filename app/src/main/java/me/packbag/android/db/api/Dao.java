@@ -2,6 +2,8 @@ package me.packbag.android.db.api;
 
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
+import com.raizlabs.android.dbflow.sql.language.Update;
+import com.raizlabs.android.dbflow.sql.language.Where;
 
 import java.util.List;
 
@@ -10,6 +12,7 @@ import javax.inject.Singleton;
 import me.packbag.android.db.model.ItemInSet;
 import me.packbag.android.db.model.ItemInSet_Table;
 import me.packbag.android.db.model.ItemSet;
+import me.packbag.android.db.model.ItemStatus;
 import rx.Observable;
 import rx.Single;
 
@@ -29,5 +32,12 @@ public class Dao {
                     .where(Condition.column(ItemInSet_Table.ITEMSET_ITEM_SET_ID).eq(itemSet.getId()))
                     .queryList());
         });
+    }
+
+    public void clearItems(ItemSet itemSet) {
+        Where where = Update.table(ItemInSet.class)
+                .set(Condition.column(ItemInSet_Table.STATUS).eq(ItemStatus.CURRENT))
+                .where(Condition.column(ItemInSet_Table.ITEMSET_ITEM_SET_ID).eq(itemSet.getId()));
+        where.queryClose();
     }
 }
