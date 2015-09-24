@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
 apply plugin: 'me.tatarka.retrolambda'
 //apply plugin: 'com.android.databinding'
-//apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 23
@@ -82,5 +82,5 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.6.1'
     compile 'com.timehop.stickyheadersrecyclerview:library:0.4.1@aar'
     compile 'de.greenrobot:eventbus:2.4.0'
-//    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 }

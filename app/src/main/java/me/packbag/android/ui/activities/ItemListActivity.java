@@ -15,7 +15,6 @@ import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
-import org.androidannotations.annotations.Trace;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.List;
@@ -31,10 +30,12 @@ import me.packbag.android.db.model.ItemSet;
 import me.packbag.android.db.model.ItemStatus;
 import me.packbag.android.ui.ItemProvider;
 import me.packbag.android.ui.adapters.ItemListFragmentsAdapter;
+import me.packbag.android.ui.events.ItemCount;
 import me.packbag.android.ui.events.ItemListChangedEvent;
 import me.packbag.android.ui.events.TakenEvent;
 import me.packbag.android.ui.events.UselessEvent;
 import rx.Observable;
+import rx.observables.GroupedObservable;
 import rx.subjects.BehaviorSubject;
 
 @EActivity(R.layout.activity_itemlist)
@@ -48,16 +49,41 @@ public class ItemListActivity extends AppCompatActivity implements ItemProvider 
     @Extra  ItemSet itemSet;
     @Inject Dao     dao;
 
-    private BehaviorSubject<List<ItemInSet>> typedItems = BehaviorSubject.create();
+    private BehaviorSubject<List<ItemInSet>> typedItems        = BehaviorSubject.create();
+    private BehaviorSubject<Object>          itemStatusChanged = BehaviorSubject.create(0);
 
     @AfterViews
     void afterViews() {
         App.get(this).component().inject(this);
         setTitle(itemSet.getName());
 
-        viewPager.setAdapter(new ItemListFragmentsAdapter(getSupportFragmentManager(), this));
+        ItemListFragmentsAdapter adapter = new ItemListFragmentsAdapter(getSupportFragmentManager(), this);
+        viewPager.setAdapter(adapter);
         tabs.setupWithViewPager(viewPager);
+
+        countStatusedItemsForTitles(adapter);
         loadItems();
+    }
+
+    private void countStatusedItemsForTitles(ItemListFragmentsAdapter adapter) {
+        itemStatusChanged.flatMap(i -> typedItems.flatMap(itemInSets -> {
+            Observable<GroupedObservable<ItemStatus, ItemInSet>> go = Observable.from(itemInSets)
+                    .groupBy(itemInSet -> itemInSet.getStatus());
+            return go.flatMap((GroupedObservable<ItemStatus, ItemInSet> obs) -> {
+                return obs.count().map((Integer count) -> new ItemCount(obs.getKey(), count));
+            }).toList();
+        })).subscribe((List<ItemCount> pairs) -> {
+            L.v(pairs);
+            adapter.onEvent(pairs);
+            updateTabTitles(adapter);
+        }, L::e, L::i);
+    }
+
+    private void updateTabTitles(ItemListFragmentsAdapter adapter) {
+        for (int i = 0; i < tabs.getTabCount(); i++) {
+            //noinspection ConstantConditions
+            tabs.getTabAt(i).setText(adapter.getPageTitle(i));
+        }
     }
 
     private void loadItems() {
@@ -65,7 +91,6 @@ public class ItemListActivity extends AppCompatActivity implements ItemProvider 
     }
 
     @Override
-    @Trace
     public Observable<List<Item>> getItems(ItemStatus itemStatus) {
         return typedItems.flatMap((List<ItemInSet> itemInSets) -> {
             return Observable.from(itemInSets)
@@ -91,12 +116,13 @@ public class ItemListActivity extends AppCompatActivity implements ItemProvider 
 
     @SuppressWarnings("unused")
     public void onEvent(TakenEvent event) {
-        changeTypedItemStatus(event.item, ItemStatus.TAKEN);
+
+        changeTypedItemStatus(event.getItem(), ItemStatus.TAKEN);
     }
 
     @SuppressWarnings("unused")
     public void onEvent(UselessEvent event) {
-        changeTypedItemStatus(event.item, ItemStatus.USELESS);
+        changeTypedItemStatus(event.getItem(), ItemStatus.USELESS);
     }
 
     private void changeTypedItemStatus(Item item, ItemStatus itemStatus) {
@@ -106,7 +132,10 @@ public class ItemListActivity extends AppCompatActivity implements ItemProvider 
                 .doOnNext(input1 -> input1.setStatus(itemStatus))
                 .doOnNext(BaseModel::save)
                 .toList()
-                .subscribe(L::i, L::e, () -> Bus.post(new ItemListChangedEvent()));
+                .subscribe(L::i, L::e, () -> {
+                    itemStatusChanged.onNext(0);
+                    Bus.post(new ItemListChangedEvent());
+                });
     }
 
     @OptionsItem(R.id.action_new_item)

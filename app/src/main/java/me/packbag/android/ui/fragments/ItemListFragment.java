@@ -11,7 +11,6 @@ import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
-import org.androidannotations.annotations.Trace;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.List;
@@ -56,7 +55,6 @@ public class ItemListFragment extends Fragment {
         Bus.unregister(this);
     }
 
-    @Trace
     public void onEventMainThread(ItemListChangedEvent event) {
         getItems().subscribe(adapter::swapItems);
     }
