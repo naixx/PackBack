@@ -75,7 +75,7 @@ public class NewItemActivity extends AppCompatActivity implements BaseAdapter.In
     @Click(R.id.addBtn)
     void onAdd() {
         if (TextUtils.isEmpty(name.getText())) {
-            name.setError("Too short!");
+            name.setError(getString(R.string.new_item_name_too_short));
             return;
         }
         Item item = new Item();
