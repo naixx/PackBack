@@ -2,15 +2,21 @@ package me.packbag.android.ui.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuInflater;
 
-import com.github.naixx.Bus;
+import com.google.common.collect.FluentIterable;
+import com.jakewharton.rxbinding.support.v7.widget.RxSearchView;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
+import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.List;
@@ -21,22 +27,43 @@ import me.packbag.android.db.model.ItemStatus;
 import me.packbag.android.ui.ItemProvider;
 import me.packbag.android.ui.adapters.Customizers;
 import me.packbag.android.ui.adapters.ItemsAdapter;
-import me.packbag.android.ui.events.ItemListChangedEvent;
 import rx.Observable;
+import rx.Subscription;
 
 @EFragment(R.layout.fragment_itemlist)
+@OptionsMenu(R.menu.fragment_list_item)
 public class ItemListFragment extends Fragment {
 
     @ViewById    RecyclerView recyclerView;
     @FragmentArg ItemStatus   status;
-    private      ItemsAdapter adapter;
+
+    private ItemsAdapter adapter;
 
     @AfterViews
     void afterViews() {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addItemDecoration(new StickyRecyclerHeadersDecoration(adapter));
-        getItems().subscribe(adapter::swapItems);
+        loadAllItems();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+
+        Observable<String> textChanges = RxSearchView.queryTextChanges(searchView)
+                .map(it -> it.toString().toLowerCase());
+        Subscription s = Observable.combineLatest(textChanges,
+                getItems(),
+                (text, items) -> FluentIterable.from(items)
+                        .filter((Item item) -> item.getName().toLowerCase().contains(text))
+                        .toList()).subscribe(adapter::swapItems);
+
+        searchView.setOnCloseListener(() -> {
+            s.unsubscribe();
+            loadAllItems();
+            return false;
+        });
     }
 
     private Observable<List<Item>> getItems() {
@@ -47,16 +74,14 @@ public class ItemListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         adapter = new ItemsAdapter(Customizers.get(status));
-        Bus.register(this);
+//        Bus.register(this);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Bus.unregister(this);
+  //      Bus.unregister(this);
     }
 
-    public void onEventMainThread(ItemListChangedEvent event) {
-        getItems().subscribe(adapter::swapItems);
-    }
+    private void loadAllItems() {getItems().subscribe(adapter::swapItems);}
 }

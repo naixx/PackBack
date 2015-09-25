@@ -31,14 +31,13 @@ import me.packbag.android.db.model.ItemStatus;
 import me.packbag.android.ui.ItemProvider;
 import me.packbag.android.ui.adapters.ItemListFragmentsAdapter;
 import me.packbag.android.ui.events.ItemCount;
-import me.packbag.android.ui.events.ItemListChangedEvent;
 import me.packbag.android.ui.events.ItemStatusChangedEvent;
 import rx.Observable;
 import rx.observables.GroupedObservable;
 import rx.subjects.BehaviorSubject;
 
 @EActivity(R.layout.activity_itemlist)
-@OptionsMenu(R.menu.menu_item_list)
+@OptionsMenu(R.menu.activity_item_list)
 public class ItemListActivity extends AppCompatActivity implements ItemProvider {
 
     public static final int REQUEST_CODE_NEW_ITEM = 1;
@@ -65,14 +64,13 @@ public class ItemListActivity extends AppCompatActivity implements ItemProvider 
     }
 
     private void countStatusedItemsForTitles(ItemListFragmentsAdapter adapter) {
-        itemStatusChanged.flatMap(i -> //
-                typedItems.flatMap(itemInSets -> {
-                    Observable<GroupedObservable<ItemStatus, ItemInSet>> go = Observable.from(itemInSets)
-                            .groupBy(itemInSet -> itemInSet.getStatus());
-                    return go.flatMap((GroupedObservable<ItemStatus, ItemInSet> obs) -> {
-                        return obs.count().map((Integer count) -> new ItemCount(obs.getKey(), count));
-                    }).toList();
-                })).subscribe((List<ItemCount> pairs) -> {
+        itemStatusChanged.flatMap(i -> typedItems.flatMap(itemInSets -> {
+            Observable<GroupedObservable<ItemStatus, ItemInSet>> go = Observable.from(itemInSets)
+                    .groupBy(itemInSet -> itemInSet.getStatus());
+            return go.flatMap((GroupedObservable<ItemStatus, ItemInSet> obs) -> {
+                return obs.count().map((Integer count) -> new ItemCount(obs.getKey(), count));
+            }).toList();
+        })).subscribe((List<ItemCount> pairs) -> {
             L.v(pairs);
             adapter.onEvent(pairs);
             updateTabTitles(adapter);
@@ -97,7 +95,9 @@ public class ItemListActivity extends AppCompatActivity implements ItemProvider 
                     .filter(input -> input.getStatus() == itemStatus)
                     .map(ItemInSet::getItem)
                     .toSortedList((item, item2) -> {
-                        return Ordering.natural().onResultOf((Item item1) -> item1.getCategory().getId()).compare(item, item2);
+                        return Ordering.natural()
+                                .onResultOf((Item item1) -> item1.getCategory().getId())
+                                .compare(item, item2);
                     });
         });
     }
@@ -118,13 +118,13 @@ public class ItemListActivity extends AppCompatActivity implements ItemProvider 
     public void onEvent(ItemStatusChangedEvent e) {
         typedItems.take(1)
                 .flatMap(Observable::from)
-                .first(input -> input.getItem().getId() == e.getItem().getId())
+                .filter(input -> input.getItem().getId() == e.getItem().getId())
                 .doOnNext(input1 -> input1.setStatus(e.getStatus()))
                 .doOnNext(BaseModel::save)
                 .toList()
                 .subscribe(L::i, L::e, () -> {
+                    typedItems.take(1).subscribe(typedItems::onNext);
                     itemStatusChanged.onNext(0);
-                    Bus.post(new ItemListChangedEvent());
                 });
     }
 

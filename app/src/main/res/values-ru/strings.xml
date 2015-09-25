@@ -10,4 +10,5 @@
     <string name="tab_title_taken">Берём</string>
     <string name="tab_title_current">Вещи</string>
     <string name="tab_title_useless">Не берём</string>
+    <string name="action_search">Поиск</string>
 </resources>

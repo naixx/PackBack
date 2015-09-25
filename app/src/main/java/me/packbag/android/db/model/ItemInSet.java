@@ -27,20 +27,20 @@ public class ItemInSet extends BaseModel implements WithId {
 
     @Column
     @ForeignKey(
-        references = { @ForeignKeyReference(
-            columnName = "item_set_id",
-            columnType = Long.class,
-            foreignColumnName = "id") },
-        saveForeignKeyModel = false)
+            references = { @ForeignKeyReference(
+                    columnName = "item_set_id",
+                    columnType = Long.class,
+                    foreignColumnName = "id") },
+            saveForeignKeyModel = false)
     ForeignKeyContainer<ItemSet> itemSet;
 
     @Column
     @ForeignKey(
-        references = { @ForeignKeyReference(
-            columnName = "item_id",
-            columnType = Long.class,
-            foreignColumnName = "id") },
-        saveForeignKeyModel = false)
+            references = { @ForeignKeyReference(
+                    columnName = "item_id",
+                    columnType = Long.class,
+                    foreignColumnName = "id") },
+            saveForeignKeyModel = false)
     ForeignKeyContainer<Item> item;
 
     @Column ItemStatus status = ItemStatus.CURRENT;
@@ -94,6 +94,11 @@ public class ItemInSet extends BaseModel implements WithId {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this).add("id", id).add("itemSet", itemSet).add("item", item).add("status", status).toString();
+        return MoreObjects.toStringHelper(this)
+                .add("id", id)
+                //.add("itemSet", itemSet.load())
+                .add("item", item.load())
+                .add("status", status)
+                .toString();
     }
 }
