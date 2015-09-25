@@ -1,5 +1,6 @@
 package me.packbag.android.ui.adapters;
 
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,11 +24,23 @@ import me.packbag.android.ui.events.ItemStatusChangedEvent;
  */
 public class ItemsAdapter extends BaseAdapter<Item, ItemsAdapter.ViewHolder> implements StickyRecyclerHeadersAdapter<ItemsAdapter.HeaderViewHolder> {
 
+    public ItemsAdapter(AdapterCustomizer customizer) {this.customizer = customizer;}
+
+    interface AdapterCustomizer {
+
+        int getPopupMenuRes();
+
+        int getListItemRes();
+    }
+
     class ViewHolder extends BaseViewHolder<Item> {
 
         @Bind(R.id.name)    TextView name;
-        @Bind(R.id.takeBtn) View     takeBtn;
         @Bind(R.id.moreBtn) View     moreBtn;
+
+        @Bind(R.id.takeBtn)
+        @Nullable
+        View takeBtn;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -36,17 +49,22 @@ public class ItemsAdapter extends BaseAdapter<Item, ItemsAdapter.ViewHolder> imp
         @Override
         public void bind(Item item, int position) {
             name.setText(item.getName());
-            takeBtn.setOnClickListener(v -> Bus.post(new ItemStatusChangedEvent(item, ItemStatus.TAKEN)));
+            if (takeBtn != null) {
+                takeBtn.setOnClickListener(v -> Bus.post(new ItemStatusChangedEvent(item, ItemStatus.TAKEN)));
+            }
             moreBtn.setOnClickListener(v -> showPopup(v, item));
         }
 
         private void showPopup(View v, Item item) {
             PopupMenu popup = new PopupMenu(v.getContext(), v);
-            popup.inflate(R.menu.item_more_actions);
+            popup.inflate(customizer.getPopupMenuRes());
             popup.setOnMenuItemClickListener(menuItem -> {
                 switch (menuItem.getItemId()) {
-                    case R.id.action_useless:
+                    case R.id.action_popup_useless:
                         Bus.post(new ItemStatusChangedEvent(item, ItemStatus.USELESS));
+                        return true;
+                    case R.id.action_popup_back_to_bag:
+                        Bus.post(new ItemStatusChangedEvent(item, ItemStatus.CURRENT));
                         return true;
                     default:
                         return false;
@@ -55,6 +73,8 @@ public class ItemsAdapter extends BaseAdapter<Item, ItemsAdapter.ViewHolder> imp
             popup.show();
         }
     }
+
+    private final AdapterCustomizer customizer;
 
     class HeaderViewHolder extends com.github.naixx.BaseViewHolder<String> {
 
@@ -72,7 +92,7 @@ public class ItemsAdapter extends BaseAdapter<Item, ItemsAdapter.ViewHolder> imp
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(customizer.getListItemRes(), parent, false));
     }
 
     @Override

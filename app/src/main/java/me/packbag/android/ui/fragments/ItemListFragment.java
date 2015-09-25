@@ -19,6 +19,7 @@ import me.packbag.android.R;
 import me.packbag.android.db.model.Item;
 import me.packbag.android.db.model.ItemStatus;
 import me.packbag.android.ui.ItemProvider;
+import me.packbag.android.ui.adapters.Customizers;
 import me.packbag.android.ui.adapters.ItemsAdapter;
 import me.packbag.android.ui.events.ItemListChangedEvent;
 import rx.Observable;
@@ -45,7 +46,7 @@ public class ItemListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        adapter = new ItemsAdapter();
+        adapter = new ItemsAdapter(Customizers.get(status));
         Bus.register(this);
     }
 

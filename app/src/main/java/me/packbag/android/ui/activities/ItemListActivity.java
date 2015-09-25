@@ -115,7 +115,7 @@ public class ItemListActivity extends AppCompatActivity implements ItemProvider 
     }
 
     @SuppressWarnings("unused")
-    private void onEvent(ItemStatusChangedEvent e) {
+    public void onEvent(ItemStatusChangedEvent e) {
         typedItems.take(1)
                 .flatMap(Observable::from)
                 .first(input -> input.getItem().getId() == e.getItem().getId())
