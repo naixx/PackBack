@@ -127,12 +127,15 @@ public class ItemListActivity extends AppCompatActivity implements ItemProvider 
     void onClearItems() {
         dao.clearItems(itemSet);
         loadItems();
-        typedItems.take(1).subscribe(itemInSets -> viewPager.setCurrentItem(0));
+        scrollToFirstPage();
     }
 
     @OnActivityResult(REQUEST_CODE_NEW_ITEM)
     void onItemAdded() {
         L.i();
         loadItems();
+        scrollToFirstPage();
     }
+
+    private void scrollToFirstPage() {typedItems.take(1).subscribe(itemInSets -> viewPager.setCurrentItem(0));}
 }
