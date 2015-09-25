@@ -1,9 +1,0 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="me.packbag.android.ui.activities.NewItemActivity">
-    <item
-        android:id="@+id/action_add"
-        android:title="Add"
-        app:showAsAction="always" />
-</menu>

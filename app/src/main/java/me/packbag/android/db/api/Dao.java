@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.inject.Singleton;
 
+import me.packbag.android.db.model.Item;
 import me.packbag.android.db.model.ItemCategory;
 import me.packbag.android.db.model.ItemCategory_Table;
 import me.packbag.android.db.model.ItemInSet;
@@ -42,6 +43,12 @@ public class Dao {
             singleSubscriber.onSuccess(new Select().from(ItemCategory.class)
                     .orderBy(OrderBy.columns(ItemCategory_Table.ID).ascending())
                     .queryList());
+        });
+    }
+
+    public Single<List<Item>> itemsAll() {
+        return Single.create(singleSubscriber -> {
+            singleSubscriber.onSuccess(new Select().from(Item.class).queryList());
         });
     }
 
