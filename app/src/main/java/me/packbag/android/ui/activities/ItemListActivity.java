@@ -32,8 +32,7 @@ import me.packbag.android.ui.ItemProvider;
 import me.packbag.android.ui.adapters.ItemListFragmentsAdapter;
 import me.packbag.android.ui.events.ItemCount;
 import me.packbag.android.ui.events.ItemListChangedEvent;
-import me.packbag.android.ui.events.TakenEvent;
-import me.packbag.android.ui.events.UselessEvent;
+import me.packbag.android.ui.events.ItemStatusChangedEvent;
 import rx.Observable;
 import rx.observables.GroupedObservable;
 import rx.subjects.BehaviorSubject;
@@ -116,20 +115,11 @@ public class ItemListActivity extends AppCompatActivity implements ItemProvider 
     }
 
     @SuppressWarnings("unused")
-    public void onEvent(TakenEvent event) {
-        changeTypedItemStatus(event.getItem(), ItemStatus.TAKEN);
-    }
-
-    @SuppressWarnings("unused")
-    public void onEvent(UselessEvent event) {
-        changeTypedItemStatus(event.getItem(), ItemStatus.USELESS);
-    }
-
-    private void changeTypedItemStatus(Item item, ItemStatus itemStatus) {
+    private void onEvent(ItemStatusChangedEvent e) {
         typedItems.take(1)
                 .flatMap(Observable::from)
-                .first(input -> input.getItem().getId() == item.getId())
-                .doOnNext(input1 -> input1.setStatus(itemStatus))
+                .first(input -> input.getItem().getId() == e.getItem().getId())
+                .doOnNext(input1 -> input1.setStatus(e.getStatus()))
                 .doOnNext(BaseModel::save)
                 .toList()
                 .subscribe(L::i, L::e, () -> {

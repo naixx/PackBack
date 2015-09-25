@@ -15,8 +15,8 @@ import butterknife.Bind;
 import me.packbag.android.R;
 import me.packbag.android.db.model.Item;
 import me.packbag.android.db.model.ItemCategory;
-import me.packbag.android.ui.events.TakenEvent;
-import me.packbag.android.ui.events.UselessEvent;
+import me.packbag.android.db.model.ItemStatus;
+import me.packbag.android.ui.events.ItemStatusChangedEvent;
 
 /**
  * Created by astra on 17.07.2015.
@@ -36,7 +36,7 @@ public class ItemsAdapter extends BaseAdapter<Item, ItemsAdapter.ViewHolder> imp
         @Override
         public void bind(Item item, int position) {
             name.setText(item.getName());
-            takeBtn.setOnClickListener(v -> Bus.post(new TakenEvent(item)));
+            takeBtn.setOnClickListener(v -> Bus.post(new ItemStatusChangedEvent(item, ItemStatus.TAKEN)));
             moreBtn.setOnClickListener(v -> showPopup(v, item));
         }
 
@@ -46,7 +46,7 @@ public class ItemsAdapter extends BaseAdapter<Item, ItemsAdapter.ViewHolder> imp
             popup.setOnMenuItemClickListener(menuItem -> {
                 switch (menuItem.getItemId()) {
                     case R.id.action_useless:
-                        Bus.post(new UselessEvent(item));
+                        Bus.post(new ItemStatusChangedEvent(item, ItemStatus.USELESS));
                         return true;
                     default:
                         return false;
