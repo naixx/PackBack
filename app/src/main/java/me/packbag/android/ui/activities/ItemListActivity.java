@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import com.github.naixx.Bus;
 import com.github.naixx.L;
 import com.google.common.collect.Ordering;
-import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -24,7 +23,6 @@ import javax.inject.Inject;
 import me.packbag.android.App;
 import me.packbag.android.R;
 import me.packbag.android.db.api.Dao;
-import me.packbag.android.db.model.Item;
 import me.packbag.android.db.model.ItemInSet;
 import me.packbag.android.db.model.ItemSet;
 import me.packbag.android.db.model.ItemStatus;
@@ -89,14 +87,13 @@ public class ItemListActivity extends AppCompatActivity implements ItemProvider 
     }
 
     @Override
-    public Observable<List<Item>> getItems(ItemStatus itemStatus) {
+    public Observable<List<ItemInSet>> getItems(ItemStatus itemStatus) {
         return typedItems.flatMap((List<ItemInSet> itemInSets) -> {
             return Observable.from(itemInSets)
                     .filter(input -> input.getStatus() == itemStatus)
-                    .map(ItemInSet::getItem)
                     .toSortedList((item, item2) -> {
                         return Ordering.natural()
-                                .onResultOf((Item item1) -> item1.getCategory().getId())
+                                .onResultOf((ItemInSet item1) -> item1.getItem().getCategory().getId())
                                 .compare(item, item2);
                     });
         });
@@ -116,16 +113,9 @@ public class ItemListActivity extends AppCompatActivity implements ItemProvider 
 
     @SuppressWarnings("unused")
     public void onEvent(ItemStatusChangedEvent e) {
-        typedItems.take(1)
-                .flatMap(Observable::from)
-                .filter(input -> input.getItem().getId() == e.getItem().getId())
-                .doOnNext(input1 -> input1.setStatus(e.getStatus()))
-                .doOnNext(BaseModel::save)
-                .toList()
-                .subscribe(L::i, L::e, () -> {
-                    typedItems.take(1).subscribe(typedItems::onNext);
-                    itemStatusChanged.onNext(0);
-                });
+        e.getItem().setStatus(e.getStatus()).async().save();
+        typedItems.take(1).subscribe(typedItems::onNext);
+        itemStatusChanged.onNext(0);
     }
 
     @OptionsItem(R.id.action_new_item)

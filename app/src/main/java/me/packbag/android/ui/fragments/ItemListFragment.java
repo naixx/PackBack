@@ -22,7 +22,7 @@ import org.androidannotations.annotations.ViewById;
 import java.util.List;
 
 import me.packbag.android.R;
-import me.packbag.android.db.model.Item;
+import me.packbag.android.db.model.ItemInSet;
 import me.packbag.android.db.model.ItemStatus;
 import me.packbag.android.ui.ItemProvider;
 import me.packbag.android.ui.adapters.Customizers;
@@ -56,7 +56,7 @@ public class ItemListFragment extends Fragment {
         Subscription s = Observable.combineLatest(textChanges,
                 getItems(),
                 (text, items) -> FluentIterable.from(items)
-                        .filter((Item item) -> item.getName().toLowerCase().contains(text))
+                        .filter((ItemInSet item) -> item.getItem().getName().toLowerCase().contains(text))
                         .toList()).subscribe(adapter::swapItems);
 
         searchView.setOnCloseListener(() -> {
@@ -66,7 +66,7 @@ public class ItemListFragment extends Fragment {
         });
     }
 
-    private Observable<List<Item>> getItems() {
+    private Observable<List<ItemInSet>> getItems() {
         return ((ItemProvider) getContext()).getItems(status);
     }
 

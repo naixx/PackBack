@@ -2,7 +2,7 @@ package me.packbag.android.ui;
 
 import java.util.List;
 
-import me.packbag.android.db.model.Item;
+import me.packbag.android.db.model.ItemInSet;
 import me.packbag.android.db.model.ItemStatus;
 import rx.Observable;
 
@@ -11,5 +11,5 @@ import rx.Observable;
  */
 public interface ItemProvider {
 
-    Observable<List<Item>> getItems(ItemStatus itemStatus);
+    Observable<List<ItemInSet>> getItems(ItemStatus itemStatus);
 }

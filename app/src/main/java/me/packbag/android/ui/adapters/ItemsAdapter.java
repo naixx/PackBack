@@ -14,15 +14,15 @@ import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
 
 import butterknife.Bind;
 import me.packbag.android.R;
-import me.packbag.android.db.model.Item;
 import me.packbag.android.db.model.ItemCategory;
+import me.packbag.android.db.model.ItemInSet;
 import me.packbag.android.db.model.ItemStatus;
 import me.packbag.android.ui.events.ItemStatusChangedEvent;
 
 /**
  * Created by astra on 17.07.2015.
  */
-public class ItemsAdapter extends BaseAdapter<Item, ItemsAdapter.ViewHolder> implements StickyRecyclerHeadersAdapter<ItemsAdapter.HeaderViewHolder> {
+public class ItemsAdapter extends BaseAdapter<ItemInSet, ItemsAdapter.ViewHolder> implements StickyRecyclerHeadersAdapter<ItemsAdapter.HeaderViewHolder> {
 
     public ItemsAdapter(AdapterCustomizer customizer) {this.customizer = customizer;}
 
@@ -33,7 +33,7 @@ public class ItemsAdapter extends BaseAdapter<Item, ItemsAdapter.ViewHolder> imp
         int getListItemRes();
     }
 
-    class ViewHolder extends BaseViewHolder<Item> {
+    class ViewHolder extends BaseViewHolder<ItemInSet> {
 
         @Bind(R.id.name)    TextView name;
         @Bind(R.id.moreBtn) View     moreBtn;
@@ -47,15 +47,15 @@ public class ItemsAdapter extends BaseAdapter<Item, ItemsAdapter.ViewHolder> imp
         }
 
         @Override
-        public void bind(Item item, int position) {
-            name.setText(item.getName());
+        public void bind(ItemInSet item, int position) {
+            name.setText(item.getItem().getName());
             if (takeBtn != null) {
                 takeBtn.setOnClickListener(v -> Bus.post(new ItemStatusChangedEvent(item, ItemStatus.TAKEN)));
             }
             moreBtn.setOnClickListener(v -> showPopup(v, item));
         }
 
-        private void showPopup(View v, Item item) {
+        private void showPopup(View v, ItemInSet item) {
             PopupMenu popup = new PopupMenu(v.getContext(), v);
             popup.inflate(customizer.getPopupMenuRes());
             popup.setOnMenuItemClickListener(menuItem -> {
@@ -97,7 +97,7 @@ public class ItemsAdapter extends BaseAdapter<Item, ItemsAdapter.ViewHolder> imp
 
     @Override
     public long getHeaderId(int i) {
-        return items.get(i).getCategory().getId() + 2; //we add 2 because we have default category with id -1
+        return items.get(i).getItem().getCategory().getId() + 2; //we add 2 because we have default category with id -1
     }
 
     @Override
@@ -107,7 +107,7 @@ public class ItemsAdapter extends BaseAdapter<Item, ItemsAdapter.ViewHolder> imp
 
     @Override
     public void onBindHeaderViewHolder(HeaderViewHolder headerViewHolder, int position) {
-        ItemCategory cat = items.get(position).getCategory();
+        ItemCategory cat = items.get(position).getItem().getCategory();
         if (cat.getId() == -1) {
             headerViewHolder.bind(headerViewHolder.itemView.getContext().getString(R.string.list_item_category_user), position);
         } else {
