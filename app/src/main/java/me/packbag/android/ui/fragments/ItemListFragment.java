@@ -74,13 +74,6 @@ public class ItemListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         adapter = new ItemsAdapter(Customizers.get(status));
-//        Bus.register(this);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-  //      Bus.unregister(this);
     }
 
     private void loadAllItems() {getItems().subscribe(adapter::swapItems);}

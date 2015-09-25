@@ -23,12 +23,11 @@ import java.util.Scanner;
 public class Utils {
 
     public final static int COLOR_ANIMATION_DURATION = 1000;
-    public final static int DEFAULT_DELAY = 0;
+    public final static int DEFAULT_DELAY            = 0;
 
     public static void animateViewTextColor(View v, int startColor, int endColor) {
 
-        ObjectAnimator animator = ObjectAnimator.ofObject(v, "textColor",
-                new ArgbEvaluator(), startColor, endColor);
+        ObjectAnimator animator = ObjectAnimator.ofObject(v, "textColor", new ArgbEvaluator(), startColor, endColor);
 
         if (Build.VERSION.SDK_INT >= 21) {
             animator.setInterpolator(new PathInterpolator(0.4f, 0f, 1f, 1f));
@@ -60,7 +59,6 @@ public class Utils {
         return hideViewByScale(v, DEFAULT_DELAY, 1, 0);
     }
 
-
     public static ViewPropertyAnimator hideViewByScalyInX(View v) {
 
         return hideViewByScale(v, DEFAULT_DELAY, 0, 1);
@@ -68,20 +66,17 @@ public class Utils {
 
     private static ViewPropertyAnimator hideViewByScale(View v, int delay, int x, int y) {
 
-        ViewPropertyAnimator propertyAnimator = v.animate().setStartDelay(delay)
-                .scaleX(x).scaleY(y);
+        ViewPropertyAnimator propertyAnimator = v.animate().setStartDelay(delay).scaleX(x).scaleY(y);
 
         return propertyAnimator;
     }
 
     public static ViewPropertyAnimator showViewByScale(View v) {
 
-        ViewPropertyAnimator propertyAnimator = v.animate().setStartDelay(DEFAULT_DELAY)
-                .scaleX(1).scaleY(1);
+        ViewPropertyAnimator propertyAnimator = v.animate().setStartDelay(DEFAULT_DELAY).scaleX(1).scaleY(1);
 
         return propertyAnimator;
     }
-
 
     /**
      * calculate the optimal width for the image
@@ -103,7 +98,6 @@ public class Utils {
         }
     }
 
-
     /**
      * @param context
      * @param px
@@ -121,7 +115,6 @@ public class Utils {
     public static float pxFromDp(Context context, float dp) {
         return dp * context.getResources().getDisplayMetrics().density;
     }
-
 
     /**
      * http://stackoverflow.com/questions/10854211/android-store-inputstream-in-file
@@ -145,7 +138,6 @@ public class Utils {
         }
     }
 
-
     /**
      * http://stackoverflow.com/questions/3934331/android-how-to-encrypt-a-string
      *
@@ -164,7 +156,6 @@ public class Utils {
             for (int i = 0; i < messageDigest.length; i++)
                 hexString.append(Integer.toHexString(0xFF & messageDigest[i]));
             return hexString.toString();
-
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
@@ -178,8 +169,7 @@ public class Utils {
      * @return
      * @throws IOException
      */
-    public static String readFile(File file)
-            throws IOException {
+    public static String readFile(File file) throws IOException {
         return new Scanner(file, "UTF-8").useDelimiter("\\A").next();
     }
 

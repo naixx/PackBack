@@ -41,11 +41,11 @@ public class Item extends BaseModel implements WithId {
 
     @Column
     @ForeignKey(
-        references = { @ForeignKeyReference(
-            columnName = "item_category_id",
-            columnType = Long.class,
-            foreignColumnName = "id") },
-        saveForeignKeyModel = false)
+            references = { @ForeignKeyReference(
+                    columnName = "item_category_id",
+                    columnType = Long.class,
+                    foreignColumnName = "id") },
+            saveForeignKeyModel = false)
     ForeignKeyContainer<ItemCategory> category;
 
     @Override

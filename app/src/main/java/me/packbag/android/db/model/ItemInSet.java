@@ -94,11 +94,6 @@ public class ItemInSet extends BaseModel implements WithId {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("id", id)
-                //.add("itemSet", itemSet.load())
-                .add("item", item.load())
-                .add("status", status)
-                .toString();
+        return MoreObjects.toStringHelper(this).add("id", id).add("item", item).add("status", status).toString();
     }
 }

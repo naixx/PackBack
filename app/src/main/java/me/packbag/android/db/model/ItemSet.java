@@ -63,7 +63,9 @@ public class ItemSet extends BaseModel implements WithId, Parcelable {
     }
 
     public List<Item> getLocalItems() {
-        Integer[] ids = FluentIterable.from(Splitter.on(",").split(item_ids)).transform(Integer::valueOf).toArray(Integer.class);
+        Integer[] ids = FluentIterable.from(Splitter.on(",").split(item_ids))
+                .transform(Integer::valueOf)
+                .toArray(Integer.class);
         if (ids.length > 0) {
             Integer first = ids[0];
             Object[] o = new Object[ids.length];

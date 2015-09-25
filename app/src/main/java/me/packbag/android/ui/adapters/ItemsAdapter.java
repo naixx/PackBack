@@ -92,7 +92,8 @@ public class ItemsAdapter extends BaseAdapter<ItemInSet, ItemsAdapter.ViewHolder
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(customizer.getListItemRes(), parent, false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext())
+                .inflate(customizer.getListItemRes(), parent, false));
     }
 
     @Override
@@ -102,14 +103,16 @@ public class ItemsAdapter extends BaseAdapter<ItemInSet, ItemsAdapter.ViewHolder
 
     @Override
     public HeaderViewHolder onCreateHeaderViewHolder(ViewGroup parent) {
-        return new HeaderViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_header, parent, false));
+        return new HeaderViewHolder(LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.list_item_header, parent, false));
     }
 
     @Override
     public void onBindHeaderViewHolder(HeaderViewHolder headerViewHolder, int position) {
         ItemCategory cat = items.get(position).getItem().getCategory();
         if (cat.getId() == -1) {
-            headerViewHolder.bind(headerViewHolder.itemView.getContext().getString(R.string.list_item_category_user), position);
+            headerViewHolder.bind(headerViewHolder.itemView.getContext().getString(R.string.list_item_category_user),
+                    position);
         } else {
             headerViewHolder.bind(cat.getName(), position);
         }

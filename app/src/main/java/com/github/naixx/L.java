@@ -169,7 +169,8 @@ public class L {
         static String formatString(String message, Object... args) {
             // If no varargs are supplied, treat it as a request to log the
             // string without formatting.
-            return methodName() + ":  " + (args.length == 0 ? message : String.format(message, args)) + "(" + file() + ":" + line() + ")";
+            return methodName() + ":  " + (args.length == 0 ? message : String.format(message,
+                    args)) + "(" + file() + ":" + line() + ")";
         }
 
         @Override

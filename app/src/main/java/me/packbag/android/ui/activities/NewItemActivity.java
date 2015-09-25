@@ -58,14 +58,18 @@ public class NewItemActivity extends AppCompatActivity implements BaseAdapter.In
         spinnerAdapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item);
         spinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         spinner.setAdapter(spinnerAdapter);
-        dao.categories(itemSet).flatMapObservable(Observable::from).map(ItemCategoryView::new).subscribe(spinnerAdapter::add);
+        dao.categories(itemSet)
+                .flatMapObservable(Observable::from)
+                .map(ItemCategoryView::new)
+                .subscribe(spinnerAdapter::add);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         ItemsAutocompleteAdapter autocompleteAdapter = new ItemsAutocompleteAdapter(this);
         recyclerView.setAdapter(autocompleteAdapter);
 
         Observable<Item> items = dao.itemsAll().flatMapObservable(Observable::from).cache();
-        Observable<CharSequence> textEvents = RxTextView.textChanges(name).map(it -> it.toString().toLowerCase().trim());
+        Observable<CharSequence> textEvents = RxTextView.textChanges(name)
+                .map(it -> it.toString().toLowerCase().trim());
         textEvents.flatMap(text -> items.filter(item -> item.getName().toLowerCase().contains(text)).toList())
                 .subscribe(autocompleteAdapter::swapItems);
         textEvents.filter(it -> it.length() > 0).subscribe(it -> name.setError(null));

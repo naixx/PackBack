@@ -63,6 +63,7 @@ public class ItemsAutocompleteAdapter extends BaseAdapter<Item, ItemsAutocomplet
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_autocomplete, parent, false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.list_item_autocomplete, parent, false));
     }
 }

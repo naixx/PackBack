@@ -55,7 +55,9 @@ public class ItemCategory extends BaseModel implements WithId {
     @OneToMany(methods = { OneToMany.Method.SAVE, OneToMany.Method.DELETE }, variableName = "items")
     public List<Item> getItems() {
         if (items == null) {
-            items = new Select().from(Item.class).where(Condition.column(Item_Table.CATEGORY_ITEM_CATEGORY_ID).is(id)).queryList();
+            items = new Select().from(Item.class)
+                    .where(Condition.column(Item_Table.CATEGORY_ITEM_CATEGORY_ID).is(id))
+                    .queryList();
         }
         return items;
     }

@@ -9,7 +9,6 @@ import com.github.naixx.L;
 import com.raizlabs.android.dbflow.config.FlowLog;
 import com.raizlabs.android.dbflow.config.FlowManager;
 
-
 public class App extends Application {
 
     private volatile AppComponent appComponent;
@@ -19,7 +18,10 @@ public class App extends Application {
         super.onCreate();
         long start = System.currentTimeMillis();
         if (BuildConfig.DEBUG) {
-            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectAll().penaltyLog().penaltyFlashScreen().build());
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectAll()
+                    .penaltyLog()
+                    .penaltyFlashScreen()
+                    .build());
             StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectAll().penaltyLog().build());
             L.plant(new L.DebugTree());
             FlowLog.setMinimumLoggingLevel(FlowLog.Level.D);
