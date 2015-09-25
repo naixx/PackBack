@@ -69,6 +69,7 @@ public class NewItemActivity extends AppCompatActivity implements BaseAdapter.In
         textEvents.flatMap(text -> items.filter(item -> item.getName().toLowerCase().contains(text)).toList())
                 .subscribe(autocompleteAdapter::swapItems);
         textEvents.filter(it -> it.length() > 0).subscribe(it -> name.setError(null));
+        textEvents.map(CharSequence::toString).subscribe(autocompleteAdapter::setHighlightQuery);
     }
 
     @Click(R.id.addBtn)

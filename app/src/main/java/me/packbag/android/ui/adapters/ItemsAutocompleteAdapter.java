@@ -1,19 +1,22 @@
 package me.packbag.android.ui.adapters;
 
+import android.graphics.Color;
+import android.text.SpannableStringBuilder;
+import android.text.style.BackgroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.github.naixx.BaseAdapter;
 import com.github.naixx.BaseViewHolder;
-import com.github.naixx.Bus;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.Bind;
 import me.packbag.android.R;
 import me.packbag.android.db.model.Item;
-import me.packbag.android.ui.events.UselessEvent;
 
 /**
  * Created by astra on 17.07.2015.
@@ -30,29 +33,33 @@ public class ItemsAutocompleteAdapter extends BaseAdapter<Item, ItemsAutocomplet
 
         @Override
         public void bind(Item item, int position) {
-            name.setText(item.getName());
+            name.setText(hightlight(item.getName()));
             itemView.setOnClickListener(v -> listener.onClick(item));
         }
 
-        private void showPopup(View v, Item item) {
-            PopupMenu popup = new PopupMenu(v.getContext(), v);
-            popup.inflate(R.menu.item_more_actions);
-            popup.setOnMenuItemClickListener(menuItem -> {
-                switch (menuItem.getItemId()) {
-                    case R.id.action_useless:
-                        Bus.post(new UselessEvent(item));
-                        return true;
-                    default:
-                        return false;
-                }
-            });
-            popup.show();
+        private CharSequence hightlight(String text) {
+            SpannableStringBuilder highlightedText = new SpannableStringBuilder(text);
+            Pattern pattern = Pattern.compile(Pattern.quote(highlightQuery), Pattern.CASE_INSENSITIVE);
+            Matcher matcher = pattern.matcher(text);
+            while (matcher.find()) {
+                int start = matcher.start();
+                int end = matcher.end();
+                BackgroundColorSpan span = new BackgroundColorSpan(Color.YELLOW);
+                highlightedText.setSpan(span, start, end, 0);
+            }
+            return highlightedText;
         }
     }
 
     final InteractionListener<Item> listener;
 
+    private String highlightQuery;
+
     public ItemsAutocompleteAdapter(InteractionListener<Item> listener) {this.listener = listener;}
+
+    public void setHighlightQuery(String highlightQuery) {
+        this.highlightQuery = highlightQuery;
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
