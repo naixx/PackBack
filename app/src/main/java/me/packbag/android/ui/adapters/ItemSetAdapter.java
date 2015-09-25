@@ -79,7 +79,7 @@ public class ItemSetAdapter extends BaseAdapter<ItemSet, ItemSetAdapter.ViewHold
                     MetaHolder value = new MetaHolder(url);
                     meta.put(item.getId(), value);
                     loadImage(context, value);
-                });
+                }, L::e);
             }
         }
 

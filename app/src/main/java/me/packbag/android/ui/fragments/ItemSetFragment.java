@@ -4,8 +4,10 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Toast;
 
 import com.github.naixx.BaseAdapter;
+import com.github.naixx.L;
 
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentByTag;
@@ -31,7 +33,10 @@ public class ItemSetFragment extends Fragment implements BaseAdapter.Interaction
         ItemSetAdapter adapter = new ItemSetAdapter(this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        service.getSets().compose(async2ui()).subscribe(adapter::swapItems);
+        service.getSets().compose(async2ui()).subscribe(adapter::swapItems, e -> {
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            L.e(e);
+        });
     }
 
     @Override

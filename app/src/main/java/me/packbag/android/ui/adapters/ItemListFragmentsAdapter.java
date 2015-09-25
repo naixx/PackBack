@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.github.naixx.L;
 import com.google.common.collect.FluentIterable;
 
 import java.util.Collections;
@@ -43,7 +42,6 @@ public class ItemListFragmentsAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        L.v(position);
         if (counts.isEmpty()) {
             return context.getString(tabTitles[position]);
         } else {
