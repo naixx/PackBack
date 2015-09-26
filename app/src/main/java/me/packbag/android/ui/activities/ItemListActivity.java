@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.github.naixx.Bus;
 import com.github.naixx.L;
+import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Ordering;
 
 import org.androidannotations.annotations.AfterViews;
@@ -17,6 +18,7 @@ import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -46,7 +48,7 @@ public class ItemListActivity extends AppCompatActivity implements ItemProvider 
     @Inject Dao     dao;
 
     private BehaviorSubject<List<ItemInSet>> typedItems        = BehaviorSubject.create();
-    private BehaviorSubject<Object>          itemStatusChanged = BehaviorSubject.create(0);
+    private BehaviorSubject<ItemStatus>      itemStatusChanged = BehaviorSubject.create(ItemStatus.TAKEN);
 
     @AfterViews
     void afterViews() {
@@ -62,15 +64,29 @@ public class ItemListActivity extends AppCompatActivity implements ItemProvider 
     }
 
     private void countStatusedItemsForTitles(ItemListFragmentsAdapter adapter) {
-        itemStatusChanged.flatMap(i -> typedItems.flatMap(itemInSets -> {
-            Observable<GroupedObservable<ItemStatus, ItemInSet>> go = Observable.from(itemInSets)
-                    .groupBy(itemInSet -> itemInSet.getStatus());
-            return go.flatMap((GroupedObservable<ItemStatus, ItemInSet> obs) -> {
-                return obs.count().map((Integer count) -> new ItemCount(obs.getKey(), count));
-            }).toList();
-        })).subscribe((List<ItemCount> pairs) -> {
-            L.v(pairs);
-            adapter.onEvent(pairs);
+        Observable<Map<ItemStatus, Integer>> statusCounts = itemStatusChanged.flatMap(i -> //`
+                typedItems.flatMap(itemInSets -> {
+                    Observable<GroupedObservable<ItemStatus, ItemInSet>> go = Observable.from(itemInSets)
+                            .groupBy(ItemInSet::getStatus);
+                    return go.flatMap((GroupedObservable<ItemStatus, ItemInSet> obs) -> {
+                        return obs.count().map((Integer count) -> new ItemCount(obs.getKey(), count));
+                    }).toMap(ItemCount::getStatus, ItemCount::getCount);
+                }));
+        itemStatusChanged.filter(prev -> prev == ItemStatus.CURRENT)
+                .doOnNext(L::i)
+                .flatMap(prev -> typedItems.take(1))
+                .doOnNext(L::v)
+                .map(itemInSets -> FluentIterable.from(itemInSets)
+                        .filter(it -> it.getStatus() == ItemStatus.CURRENT)
+                        .size())
+                .filter(count -> count == 0)
+                .subscribe(was -> {
+                    BagPackedActivity_.intent(this).itemSet(itemSet).start();
+                });
+
+        statusCounts.subscribe((map) -> {
+            L.v(map);
+            adapter.onEvent(map);
             updateTabTitles(adapter);
         }, L::e, L::i);
     }
@@ -113,9 +129,10 @@ public class ItemListActivity extends AppCompatActivity implements ItemProvider 
 
     @SuppressWarnings("unused")
     public void onEvent(ItemStatusChangedEvent e) {
+        ItemStatus prev = e.getItem().getStatus();
         e.getItem().setStatus(e.getStatus()).async().save();
         typedItems.take(1).subscribe(typedItems::onNext);
-        itemStatusChanged.onNext(0);
+        itemStatusChanged.onNext(prev);
     }
 
     @OptionsItem(R.id.action_new_item)
