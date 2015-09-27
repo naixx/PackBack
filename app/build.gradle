@@ -3,6 +3,7 @@ apply plugin: 'android-apt'
 apply plugin: 'me.tatarka.retrolambda'
 //apply plugin: 'com.android.databinding'
 apply plugin: 'kotlin-android'
+apply plugin: 'com.getkeepsafe.dexcount'
 
 android {
     compileSdkVersion 23
@@ -34,6 +35,11 @@ android {
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/NOTICE'
         exclude 'META-INF/services/javax.annotation.processing.Processor'
+    }
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            output.outputFile = new File(output.outputFile.parent, "${applicationId}-${buildType.name}-${versionCode}.apk")
+        }
     }
 }
 apt {
@@ -73,9 +79,9 @@ dependencies {
 
     compile 'com.jakewharton.timber:timber:2.2.2'
     compile 'com.google.guava:guava:18.0'
-    compile('com.mikepenz:materialdrawer:2.9.8@aar') {
-        transitive = true
-    }
+//    compile('com.mikepenz:materialdrawer:2.9.8@aar') {
+//        transitive = true
+//    }
     compile 'com.jakewharton:butterknife:7.0.0'
     compile 'org.androidannotations:androidannotations-api:3.3.1'
     apt "org.androidannotations:androidannotations:3.3.1"
@@ -87,4 +93,7 @@ dependencies {
     compile 'com.timehop.stickyheadersrecyclerview:library:0.4.1@aar'
     compile 'de.greenrobot:eventbus:2.4.0'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+}
+configurations {
+    compile.exclude module: 'gson'
 }
