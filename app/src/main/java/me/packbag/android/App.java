@@ -5,9 +5,11 @@ import android.content.Context;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
 
+import com.crashlytics.android.Crashlytics;
 import com.github.naixx.L;
 import com.raizlabs.android.dbflow.config.FlowLog;
 import com.raizlabs.android.dbflow.config.FlowManager;
+import io.fabric.sdk.android.Fabric;
 
 public class App extends Application {
 
@@ -16,6 +18,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
         long start = System.currentTimeMillis();
         if (BuildConfig.DEBUG) {
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectAll()

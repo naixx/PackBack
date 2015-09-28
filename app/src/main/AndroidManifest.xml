@@ -24,6 +24,9 @@
             android:label="@string/title_activity_add_item" />
         <activity android:name=".ui.activities.BagPackedActivity_" >
         </activity>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="602f4bb2570989f7674e169450de3434fe4d4fd3" />
     </application>
 
 </manifest>
