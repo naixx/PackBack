@@ -1,6 +1,6 @@
 package me.packbag.android.network;
 
-import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.raizlabs.android.dbflow.annotation.NotNull;
 
@@ -38,8 +38,8 @@ public class NetworkModule {
     @Named("splash")
     RestAdapter provideRestSplashable() {
         return new RestAdapter.Builder().setEndpoint("http://www.splashbase.co/api/v1")
-                .setConverter(new JacksonConverter(new ObjectMapper().configure(JsonGenerator.Feature.IGNORE_UNKNOWN,
-                        true)))
+                .setConverter(new JacksonConverter( //
+                        new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)))
                 .setLogLevel(BuildConfig.DEBUG ? RestAdapter.LogLevel.BASIC : RestAdapter.LogLevel.NONE)
                 .build();
     }

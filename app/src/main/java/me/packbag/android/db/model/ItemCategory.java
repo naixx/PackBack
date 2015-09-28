@@ -2,7 +2,6 @@ package me.packbag.android.db.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.naixx.WithId;
-import com.google.common.base.MoreObjects;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ModelContainer;
 import com.raizlabs.android.dbflow.annotation.OneToMany;
@@ -11,6 +10,8 @@ import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
+
+import net.tribe7.common.base.Objects;
 
 import java.util.List;
 
@@ -64,6 +65,6 @@ public class ItemCategory extends BaseModel implements WithId {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this).add("id", id).add("name", name).toString();
+        return Objects.toStringHelper(this).add("id", id).add("name", name).toString();
     }
 }

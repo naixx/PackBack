@@ -9,9 +9,10 @@ import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
 
-import com.google.common.collect.FluentIterable;
 import com.jakewharton.rxbinding.support.v7.widget.RxSearchView;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
+
+import net.tribe7.common.collect.FluentIterable;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;

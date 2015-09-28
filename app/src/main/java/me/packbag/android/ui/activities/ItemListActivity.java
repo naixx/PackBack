@@ -6,8 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.github.naixx.Bus;
 import com.github.naixx.L;
-import com.google.common.collect.FluentIterable;
-import com.google.common.collect.Ordering;
+
+import net.tribe7.common.collect.FluentIterable;
+import net.tribe7.common.collect.Ordering;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -73,9 +74,7 @@ public class ItemListActivity extends AppCompatActivity implements ItemProvider 
                     }).toMap(ItemCount::getStatus, ItemCount::getCount);
                 }));
         itemStatusChanged.filter(prev -> prev == ItemStatus.CURRENT)
-                .doOnNext(L::i)
                 .flatMap(prev -> typedItems.take(1))
-                .doOnNext(L::v)
                 .map(itemInSets -> FluentIterable.from(itemInSets)
                         .filter(it -> it.getStatus() == ItemStatus.CURRENT)
                         .size())
@@ -85,7 +84,6 @@ public class ItemListActivity extends AppCompatActivity implements ItemProvider 
                 });
 
         statusCounts.subscribe((map) -> {
-            L.v(map);
             adapter.onEvent(map);
             updateTabTitles(adapter);
         }, L::e, L::i);

@@ -4,20 +4,23 @@ apply plugin: 'android-apt'
 apply plugin: 'me.tatarka.retrolambda'
 //apply plugin: 'com.android.databinding'
 apply plugin: 'kotlin-android'
-apply plugin: 'com.getkeepsafe.dexcount'
+//apply plugin: 'com.getkeepsafe.dexcount'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.0"
+    buildToolsVersion "23.0.1"
 
     defaultConfig {
         applicationId "me.packbag.android"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 1
+        versionCode 2
         versionName "1.0"
     }
     buildTypes {
+        debug{
+            applicationIdSuffix ".debug"
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -46,6 +49,7 @@ android {
 apt {
     arguments {
         androidManifestFile variant.outputs[0].processResources.manifestFile
+        resourcePackageName android.defaultConfig.applicationId
         trace true
     }
 }
@@ -69,7 +73,7 @@ dependencies {
     apt 'com.raizlabs.android:DBFlow-Compiler:2.2.1'
     compile 'com.raizlabs.android:DBFlow-Core:2.2.1'
     compile 'com.raizlabs.android:DBFlow:2.2.1'
-    compile 'com.fasterxml.jackson.jr:jackson-jr-objects:2.5.0'
+    //compile 'com.fasterxml.jackson.jr:jackson-jr-objects:2.5.0'
     compile 'com.google.dagger:dagger:2.0.1'
     apt 'com.google.dagger:dagger-compiler:2.0.1'
 
@@ -79,7 +83,7 @@ dependencies {
     compile 'io.reactivex:rxjava:1.0.14'
 
     compile 'com.jakewharton.timber:timber:2.2.2'
-    compile 'com.google.guava:guava:18.0'
+    compile 'net.tribe7.seeds:seeds-collect:16.0.1'
 //    compile('com.mikepenz:materialdrawer:2.9.8@aar') {
 //        transitive = true
 //    }
