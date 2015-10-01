@@ -32,7 +32,7 @@ import rx.Observable;
 import rx.Subscription;
 
 @EFragment(R.layout.fragment_itemlist)
-@OptionsMenu(R.menu.fragment_list_item)
+@OptionsMenu
 public class ItemListFragment extends Fragment {
 
     @ViewById    RecyclerView recyclerView;
@@ -53,7 +53,7 @@ public class ItemListFragment extends Fragment {
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
 
         Observable<String> textChanges = RxSearchView.queryTextChanges(searchView)
-                .map(it -> it.toString().toLowerCase());
+                .map(it -> it.toString().toLowerCase().trim());
         Subscription s = Observable.combineLatest(textChanges,
                 getItems(),
                 (text, items) -> FluentIterable.from(items)
