@@ -32,7 +32,7 @@ import rx.Observable;
 import rx.Subscription;
 
 @EFragment(R.layout.fragment_itemlist)
-@OptionsMenu
+@OptionsMenu(R.menu.activity_item_list)
 public class ItemListFragment extends Fragment {
 
     @ViewById    RecyclerView recyclerView;

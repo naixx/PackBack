@@ -11,7 +11,7 @@ import dagger.Module;
 import dagger.Provides;
 import me.packbag.android.BuildConfig;
 import me.packbag.android.network.api.Backend;
-import me.packbag.android.network.api.Splashable;
+import me.packbag.android.network.api.Splashbase;
 import retrofit.RestAdapter;
 import retrofit.converter.JacksonConverter;
 
@@ -54,7 +54,7 @@ public class NetworkModule {
     @Provides
     @Singleton
     @NotNull
-    Splashable provideSplashable(@Named("splash") RestAdapter restAdapter) {
-        return restAdapter.create(Splashable.class);
+    Splashbase provideSplashable(@Named("splash") RestAdapter restAdapter) {
+        return restAdapter.create(Splashbase.class);
     }
 }

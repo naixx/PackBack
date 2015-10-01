@@ -7,7 +7,7 @@ import me.packbag.android.db.DbModule;
 import me.packbag.android.db.api.Dao;
 import me.packbag.android.network.NetworkModule;
 import me.packbag.android.network.api.Backend;
-import me.packbag.android.network.api.Splashable;
+import me.packbag.android.network.api.Splashbase;
 import me.packbag.android.ui.activities.ItemListActivity;
 import me.packbag.android.ui.activities.ItemSetActivity;
 
@@ -18,7 +18,7 @@ public interface AppComponent {
 
     Backend backend();
 
-    Splashable splashable();
+    Splashbase splashable();
 
     Dao dao();
 

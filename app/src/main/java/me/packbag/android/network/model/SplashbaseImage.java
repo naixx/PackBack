@@ -7,11 +7,11 @@ import java.util.List;
 
 @JsonAutoDetect
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SplashableImage {
+public class SplashbaseImage {
 
     public static class ImageList {
 
-        public List<SplashableImage> images;
+        public List<SplashbaseImage> images;
     }
 
     public int    id;

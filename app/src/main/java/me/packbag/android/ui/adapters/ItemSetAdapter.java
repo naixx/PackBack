@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.github.naixx.BaseAdapter;
@@ -24,8 +25,8 @@ import butterknife.Bind;
 import me.packbag.android.App;
 import me.packbag.android.R;
 import me.packbag.android.db.model.ItemSet;
-import me.packbag.android.network.api.Splashable;
-import me.packbag.android.network.model.SplashableImage;
+import me.packbag.android.network.api.Splashbase;
+import me.packbag.android.network.model.SplashbaseImage;
 import me.packbag.android.util.Utils;
 import rx.Observable;
 
@@ -65,16 +66,16 @@ public class ItemSetAdapter extends BaseAdapter<ItemSet, ItemSetAdapter.ViewHold
             if (meta.get(item.getId()) != null && meta.get(item.getId()).url != null) {
                 loadImage(context, meta.get(item.getId()));
             } else {
-                Splashable splashable = App.get(context).component().splashable();
-                splashable.search(tag).map(imageList -> imageList.images).flatMap(splashableImages -> {
+                Splashbase splashbase = App.get(context).component().splashable();
+                splashbase.search(tag).map(imageList -> imageList.images).flatMap(splashableImages -> {
                     int size = splashableImages.size();
                     if (size == 0) {
                         return Observable.<String>empty();
                     }
                     return Observable.from(splashableImages)
                             .elementAt(new Random().nextInt(size))
-                            .onErrorResumeNext(Observable.<SplashableImage>empty())
-                            .map((SplashableImage o) -> o.url);
+                            .onErrorResumeNext(Observable.<SplashbaseImage>empty())
+                            .map((SplashbaseImage o) -> o.url);
                 }).compose(async2ui()).doOnNext(L::i).subscribe(url -> {
                     MetaHolder value = new MetaHolder(url);
                     meta.put(item.getId(), value);
@@ -84,33 +85,38 @@ public class ItemSetAdapter extends BaseAdapter<ItemSet, ItemSetAdapter.ViewHold
         }
 
         private void loadImage(Context context, MetaHolder meta) {
-            Glide.with(context).load(meta.url).asBitmap().centerCrop().into(new BitmapImageViewTarget(image) {
-                @Override
-                public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                    super.onResourceReady(resource, glideAnimation);
-                    if (meta.swatch != null) {
-                        setSwatch(meta.swatch);
-                    }
-                    Palette.from(resource).generate(palette -> {
+            Glide.with(context)
+                    .load(meta.url)
+                    .asBitmap()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .centerCrop()
+                    .into(new BitmapImageViewTarget(image) {
+                        @Override
+                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                            super.onResourceReady(resource, glideAnimation);
+                            if (meta.swatch != null) {
+                                setSwatch(meta.swatch);
+                            }
+                            Palette.from(resource).generate(palette -> {
 
-                        Palette.Swatch s = palette.getVibrantSwatch();
-                        if (s == null) {
-                            s = palette.getDarkVibrantSwatch();
-                        }
-                        if (s == null) {
-                            s = palette.getLightVibrantSwatch();
-                        }
-                        if (s == null) {
-                            s = palette.getMutedSwatch();
-                        }
+                                Palette.Swatch s = palette.getVibrantSwatch();
+                                if (s == null) {
+                                    s = palette.getDarkVibrantSwatch();
+                                }
+                                if (s == null) {
+                                    s = palette.getLightVibrantSwatch();
+                                }
+                                if (s == null) {
+                                    s = palette.getMutedSwatch();
+                                }
 
-                        if (s != null) {
-                            meta.swatch = s;
-                            setSwatch(s);
+                                if (s != null) {
+                                    meta.swatch = s;
+                                    setSwatch(s);
+                                }
+                            });
                         }
                     });
-                }
-            });
         }
 
         private void setSwatch(Palette.Swatch s) {
