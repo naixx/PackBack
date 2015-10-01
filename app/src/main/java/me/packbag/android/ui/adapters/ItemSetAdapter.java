@@ -48,6 +48,7 @@ public class ItemSetAdapter extends BaseAdapter<ItemSet, ItemSetAdapter.ViewHold
 
         @Override
         public void bind(ItemSet item, int position) {
+            long start = System.currentTimeMillis();
             name.setText(item.getName());
             itemView.setOnClickListener(v -> listener.onClick(item));
             String tag = "";
@@ -82,6 +83,7 @@ public class ItemSetAdapter extends BaseAdapter<ItemSet, ItemSetAdapter.ViewHold
                     loadImage(context, value);
                 }, L::e);
             }
+            L.e("end = " + (System.currentTimeMillis() - start));
         }
 
         private void loadImage(Context context, MetaHolder meta) {

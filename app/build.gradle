@@ -101,6 +101,7 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') {
         transitive = true;
     }
+    compile 'com.github.johnkil.android-progressfragment:progressfragment:1.4.0'
 }
 configurations {
     compile.exclude module: 'gson'
