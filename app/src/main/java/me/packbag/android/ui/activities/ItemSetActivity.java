@@ -1,10 +1,11 @@
 package me.packbag.android.ui.activities;
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
+import com.github.naixx.L;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
@@ -60,11 +61,11 @@ public class ItemSetActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onAttach(Activity activity) {
-            super.onAttach(activity);
+        public void onAttach(Context context) {
+            super.onAttach(context);
             if (sets == null) {
-                Backend backend = App.get(activity).component().backend();
-                Dao dao = App.get(activity).component().dao();
+                Backend backend = App.get(context).component().backend();
+                Dao dao = App.get(context).component().dao();
 
                 Observable<List<ItemSet>> fromBackend = backend.itemCategories()
                         .flatMap(Observable::from)
@@ -109,7 +110,9 @@ public class ItemSetActivity extends AppCompatActivity {
                                 }
                             }
                         })
-                        .toSortedList(SORT_FUNCTION);
+                        .toSortedList(SORT_FUNCTION)
+                        .doOnError(L::e)
+                        .onErrorResumeNext(Observable.<List<ItemSet>>empty());
                 sets = fromBackend.mergeWith(dao.itemSets().flatMap(Observable::from).toSortedList(SORT_FUNCTION))
                         .cache()
                         .takeUntil(onDestroy);

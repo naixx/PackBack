@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.beta.Beta;
 import com.github.naixx.L;
 import com.raizlabs.android.dbflow.config.FlowLog;
 import com.raizlabs.android.dbflow.config.FlowManager;
@@ -19,9 +20,9 @@ public class App extends Application {
 
     @Override
     public void onCreate() {
-        super.onCreate();
-        Fabric.with(this, new Crashlytics(), new Answers());
         long start = System.currentTimeMillis();
+        super.onCreate();
+        Fabric.with(this, new Crashlytics(), new Answers(), new Beta());
         if (BuildConfig.DEBUG) {
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectAll()
                     .penaltyLog()
