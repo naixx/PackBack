@@ -54,14 +54,17 @@ public class NewItemActivity extends AppCompatActivity implements BaseAdapter.In
 
     @AfterViews
     void afterViews() {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         Dao dao = App.get(this).component().dao();
         spinnerAdapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item);
         spinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         spinner.setAdapter(spinnerAdapter);
-        dao.categories(itemSet)
-                .flatMapObservable(Observable::from)
-                .map(ItemCategoryView::new)
-                .subscribe(spinnerAdapter::add);
+        dao.categories(itemSet).flatMapObservable(Observable::from).doOnNext(itemCategory -> {
+            if (itemCategory.getId() == ItemCategory.USER) {
+                itemCategory.setName(getString(R.string.list_item_category_user));
+            }
+        }).map(ItemCategoryView::new).subscribe(spinnerAdapter::add);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         ItemsAutocompleteAdapter autocompleteAdapter = new ItemsAutocompleteAdapter(this);
@@ -106,5 +109,11 @@ public class NewItemActivity extends AppCompatActivity implements BaseAdapter.In
         L.v(itemInSet);
         setResult(RESULT_OK);
         finish();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 }
