@@ -13,15 +13,11 @@ import com.github.naixx.BaseAdapter;
 import com.github.naixx.L;
 import com.jakewharton.rxbinding.widget.RxTextView;
 
-import net.tribe7.common.collect.Iterables;
-
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
-
-import java.util.List;
 
 import me.packbag.android.App;
 import me.packbag.android.R;
@@ -74,26 +70,13 @@ public class NewItemActivity extends AppCompatActivity implements BaseAdapter.In
         ItemsAutocompleteAdapter autocompleteAdapter = new ItemsAutocompleteAdapter(this);
         recyclerView.setAdapter(autocompleteAdapter);
 
-        Observable<Item> items = dao.itemsInSets(itemSet)
-                .flatMapObservable(Observable::from)
-                .map(ItemInSet::getItem)
-                .toList()
-                .flatMap(itemInSets -> {
-                    return dao.itemsAll()
-                            .flatMapObservable(Observable::from)
-                            .filter(item -> notContains(itemInSets, item));
-                })
-                .cache();
+        Observable<Item> items = dao.itemsExcludingItemSet(itemSet).cache();
         Observable<CharSequence> textEvents = RxTextView.textChanges(name)
                 .map(it -> it.toString().toLowerCase().trim());
         textEvents.flatMap(text -> items.filter(item -> item.getName().toLowerCase().contains(text)).toList())
                 .subscribe(autocompleteAdapter::swapItems);
         textEvents.filter(it -> it.length() > 0).subscribe(it -> name.setError(null));
         textEvents.map(CharSequence::toString).subscribe(autocompleteAdapter::setHighlightQuery);
-    }
-
-    private static boolean notContains(List<Item> items, Item item) {
-        return !Iterables.tryFind(items, input -> input.getId() == item.getId()).isPresent();
     }
 
     @Click(R.id.addBtn)

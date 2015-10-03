@@ -6,6 +6,8 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.sql.language.Update;
 import com.raizlabs.android.dbflow.sql.language.Where;
 
+import net.tribe7.common.collect.Iterables;
+
 import java.util.List;
 
 import javax.inject.Singleton;
@@ -44,6 +46,18 @@ public class Dao {
                     .orderBy(OrderBy.columns(ItemCategory_Table.ID).ascending())
                     .queryList());
         });
+    }
+
+    public Observable<Item> itemsExcludingItemSet(ItemSet itemSet) {
+        return itemsInSets(itemSet).flatMapObservable(Observable::from)
+                .map(ItemInSet::getItem)
+                .toList()
+                .flatMap(itemInSets -> itemsAll().flatMapObservable(Observable::from)
+                        .filter(item -> notContains(itemInSets, item)));
+    }
+
+    private static boolean notContains(List<Item> items, Item item) {
+        return !Iterables.tryFind(items, input -> input.getId() == item.getId()).isPresent();
     }
 
     public Single<List<Item>> itemsAll() {
