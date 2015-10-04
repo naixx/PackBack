@@ -1,12 +1,11 @@
 package me.packbag.android.db.api;
 
+import com.google.common.collect.Iterables;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.OrderBy;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.sql.language.Update;
 import com.raizlabs.android.dbflow.sql.language.Where;
-
-import net.tribe7.common.collect.Iterables;
 
 import java.util.List;
 

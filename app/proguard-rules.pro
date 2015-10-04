@@ -15,3 +15,58 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+-dontoptimize
+-dontobfuscate
+
+
+-keepattributes Exceptions,*Annotation*,InnerClasses,Signature,Deprecated,SourceFile,LineNumberTable,EnclosingMethod,JavascriptInterface
+#######
+-keep class butterknife.** { *; }
+-dontwarn butterknife.internal.**
+-keep class **$$ViewBinder { *; }
+
+-keepclasseswithmembernames class * {
+    @butterknife.* <fields>;
+}
+
+-keepclasseswithmembernames class * {
+    @butterknife.* <methods>;
+}
+########
+-dontwarn javax.annotation.*
+-dontwarn com.squareup.okhttp.**
+-dontwarn okio.**
+-dontwarn retrofit.**
+-dontwarn rx.**
+-dontwarn kotlin.dom.*
+-dontwarn org.androidannotations.api.rest.*
+-dontwarn java.lang.invoke** #retrolambda
+-dontwarn com.google.common.collect** #stripped guava
+
+#jackson
+-keepattributes *Annotation*
+-dontwarn com.fasterxml.jackson.databind**
+-keepnames class com.fasterxml.jackson.** { *; }
+-keepattributes Signature
+-keep class me.packbag.android.db.model.* {
+  public *** get*();
+  public void set*(***);
+}
+
+#retrofit
+-keepattributes *Annotation*
+-keep class retrofit.** { *; }
+-keepclasseswithmembers class * {
+@retrofit.http.* <methods>; }
+-keepattributes Signature
+
+#EventBus
+-keepclassmembers class ** {
+    public void onEvent*(**);
+}
+# Only required if you use AsyncExecutor
+#-keepclassmembers class * extends de.greenrobot.event.util.ThrowableFailureEvent {
+#    <init>(java.lang.Throwable);
+#}
+
+-keep class android.support.v7.widget.SearchView { *; }

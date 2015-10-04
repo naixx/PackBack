@@ -1,6 +1,7 @@
 package me.packbag.android.db.model;
 
 import com.github.naixx.WithId;
+import com.google.common.base.Objects;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
@@ -9,8 +10,6 @@ import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 import com.raizlabs.android.dbflow.structure.container.ForeignKeyContainer;
-
-import net.tribe7.common.base.Objects;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
