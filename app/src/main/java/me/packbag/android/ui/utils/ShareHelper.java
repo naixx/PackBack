@@ -6,7 +6,12 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.util.Log;
 
+import com.facebook.share.model.ShareContent;
+import com.facebook.share.model.ShareLinkContent;
+
 import java.util.List;
+
+import me.packbag.android.R;
 
 /**
  * Created by astra on 03.10.2015.
@@ -42,5 +47,20 @@ public class ShareHelper {
 
             context.startActivity(Intent.createChooser(share, "Select"));
         }
+    }
+
+    public static void shareCommon(final Context context) {
+        Intent share = new Intent();
+        share.setAction(Intent.ACTION_SEND);
+        share.putExtra(Intent.EXTRA_TEXT, context.getString(R.string.share_text_common));
+        share.setType("text/plain");
+        context.startActivity(share);
+    }
+
+    public static ShareContent prepareFbShareContent(final Context context) {
+        return new ShareLinkContent.Builder() //
+                .setContentUrl(Uri.parse("https://www.facebook.com/hike.and.me"))
+                .setContentTitle(context.getString(R.string.share_text_fb_title))
+                .build();
     }
 }

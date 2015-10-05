@@ -26,15 +26,15 @@
         android:orientation="horizontal">
 
         <com.facebook.share.widget.ShareButton
-            android:id="@+id/shareButton"
+            android:id="@+id/shareFb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <Button
-            android:id="@+id/vkBtn"
+        <ImageButton
+            android:id="@+id/share"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="VK" />
+            android:src="@android:drawable/ic_menu_share" />
 
         <Button
             android:id="@+id/whatsupBtn"

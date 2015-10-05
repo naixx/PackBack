@@ -12,4 +12,6 @@
     <string name="new_item_name_too_short">Too short!</string>
     <string name="popup_menu_back_to_bag">Вернуть в рюкзак</string>
     <string name="action_search">Поиск</string>
+    <string name="share_text_common">Я только что собрал рюкзак</string>
+    <string name="share_text_fb_title">@string/share_text_common</string>
 </resources>

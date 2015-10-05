@@ -1,36 +1,41 @@
 package me.packbag.android.ui.activities;
 
-import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
-import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareButton;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 import me.packbag.android.R;
 import me.packbag.android.db.model.ItemSet;
+import me.packbag.android.ui.utils.ShareHelper;
 
 @EActivity(R.layout.activity_bag_packed)
 public class BagPackedActivity extends AppCompatActivity {
 
-    @Extra    ItemSet     itemSet;
-    @ViewById TextView    text;
-    @ViewById ShareButton shareButton;
+    @Extra    ItemSet  itemSet;
+    @ViewById TextView text;
+
+    @ViewById(R.id.shareFb) ShareButton shareButton;
 
     @AfterViews
     void afterViews() {
+        //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         String text = String.format("Рюкзак для похода '%s' собран.", itemSet.getName());
         this.text.setText(text);
 
-        ShareLinkContent content = new ShareLinkContent.Builder().setContentUrl(Uri.parse(
-                "https://www.facebook.com/hike.and.me")).setContentTitle("Я только что собрал рюкзак!").build();
-        shareButton.setShareContent(content);
+        shareButton.setShareContent(ShareHelper.prepareFbShareContent(this));
+    }
+
+    @Click(R.id.share)
+    void onClick() {
+        ShareHelper.shareCommon(this);
     }
 
     @Override
