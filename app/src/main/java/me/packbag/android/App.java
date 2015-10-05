@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.beta.Beta;
+import com.facebook.FacebookSdk;
 import com.github.naixx.L;
 import com.raizlabs.android.dbflow.config.FlowLog;
 import com.raizlabs.android.dbflow.config.FlowManager;
@@ -33,6 +34,7 @@ public class App extends Application {
             FlowLog.setMinimumLoggingLevel(FlowLog.Level.D);
         }
         FlowManager.init(this);
+        FacebookSdk.sdkInitialize(this);
         long end = System.currentTimeMillis() - start;
         L.e("startup = " + end);
     }

@@ -25,11 +25,10 @@
         android:layout_centerHorizontal="true"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/fbBtn"
+        <com.facebook.share.widget.ShareButton
+            android:id="@+id/shareButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Facebook" />
+            android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/vkBtn"
@@ -38,10 +37,11 @@
             android:text="VK" />
 
         <Button
+            android:id="@+id/whatsupBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Whatsup"
-            android:id="@+id/whatsupBtn" />
+            android:text="Whatsup" />
+
     </LinearLayout>
 
 </RelativeLayout>

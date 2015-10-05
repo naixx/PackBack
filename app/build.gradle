@@ -20,12 +20,12 @@ android {
     buildTypes {
         debug{
             ext.enableCrashlytics = false
-            minifyEnabled true
+            minifyEnabled false
             applicationIdSuffix ".debug"
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -107,6 +107,8 @@ dependencies {
         transitive = true;
     }
     compile 'com.github.johnkil.android-progressfragment:progressfragment:1.4.0'
+
+    compile 'com.facebook.android:facebook-android-sdk:4.6.0'
 }
 configurations {
     compile.exclude module: 'gson'
