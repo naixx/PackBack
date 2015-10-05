@@ -59,7 +59,7 @@ public class ShareHelper {
 
     public static ShareContent prepareFbShareContent(final Context context) {
         return new ShareLinkContent.Builder() //
-                .setContentUrl(Uri.parse("https://www.facebook.com/hike.and.me"))
+                .setContentUrl(Uri.parse("http://hikapro.com"))
                 .setContentTitle(context.getString(R.string.share_text_fb_title))
                 .build();
     }

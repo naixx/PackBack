@@ -30,6 +30,11 @@
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
+        <provider
+            android:name="com.facebook.FacebookContentProvider"
+            android:authorities="com.facebook.app.FacebookContentProvider1004339269604797"
+            android:exported="true" />
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="602f4bb2570989f7674e169450de3434fe4d4fd3" />

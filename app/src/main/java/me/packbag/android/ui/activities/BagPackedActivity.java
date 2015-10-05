@@ -18,9 +18,9 @@ import me.packbag.android.ui.utils.ShareHelper;
 @EActivity(R.layout.activity_bag_packed)
 public class BagPackedActivity extends AppCompatActivity {
 
-    @Extra    ItemSet  itemSet;
-    @ViewById TextView text;
+    @Extra ItemSet itemSet;
 
+    @ViewById               TextView    text;
     @ViewById(R.id.shareFb) ShareButton shareButton;
 
     @AfterViews
