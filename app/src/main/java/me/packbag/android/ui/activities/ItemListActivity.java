@@ -7,8 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.github.naixx.Bus;
 import com.github.naixx.L;
-import com.google.common.collect.FluentIterable;
-import com.google.common.collect.Ordering;
+
+import net.tribe7.common.collect.FluentIterable;
+import net.tribe7.common.collect.Ordering;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;

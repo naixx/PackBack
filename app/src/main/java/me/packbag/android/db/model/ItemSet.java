@@ -5,11 +5,6 @@ import android.os.Parcelable;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.naixx.WithId;
-import com.google.common.base.Joiner;
-import com.google.common.base.Objects;
-import com.google.common.base.Splitter;
-import com.google.common.collect.FluentIterable;
-import com.google.common.collect.Lists;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ModelContainer;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
@@ -17,6 +12,12 @@ import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
+
+import net.tribe7.common.base.Joiner;
+import net.tribe7.common.base.Objects;
+import net.tribe7.common.base.Splitter;
+import net.tribe7.common.collect.FluentIterable;
+import net.tribe7.common.collect.Lists;
 
 import java.util.Collections;
 import java.util.List;
