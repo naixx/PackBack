@@ -1,5 +1,7 @@
 package me.packbag.android.ui.utils;
 
+import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
@@ -11,12 +13,16 @@ import com.facebook.share.model.ShareLinkContent;
 
 import java.util.List;
 
+import me.packbag.android.App;
 import me.packbag.android.R;
+import me.packbag.android.db.model.ItemSet;
 
 /**
  * Created by astra on 03.10.2015.
  */
 public class ShareHelper {
+
+    public static final int REQUEST_CODE = 44444;
 
     private void initShareIntent(final Context context, String targetPackage, Uri imageUri) {
         boolean found = false;
@@ -49,18 +55,27 @@ public class ShareHelper {
         }
     }
 
-    public static void shareCommon(final Context context) {
+    public static void shareCommon(final Activity context) {
         Intent share = new Intent();
         share.setAction(Intent.ACTION_SEND);
         share.putExtra(Intent.EXTRA_TEXT, context.getString(R.string.share_text_common));
         share.setType("text/plain");
-        context.startActivity(share);
+        context.startActivityForResult(share, REQUEST_CODE);
+    }
+
+    public static void onActivityResultForCommon(
+        final Context context, int requestCode, int resultCode, Intent data, ItemSet itemSet) {
+        if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
+            ComponentName componentName = data.getComponent();
+            final String packageName = componentName.getPackageName();
+            App.get(context).component().analytics().logShare(itemSet, packageName);
+        }
     }
 
     public static ShareContent prepareFbShareContent(final Context context) {
         return new ShareLinkContent.Builder() //
-                .setContentUrl(Uri.parse("http://hikapro.com"))
-                .setContentTitle(context.getString(R.string.share_text_fb_title))
-                .build();
+            .setContentUrl(Uri.parse("http://hikapro.com"))
+            .setContentTitle(context.getString(R.string.share_text_fb_title))
+            .build();
     }
 }

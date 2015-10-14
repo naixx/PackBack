@@ -83,7 +83,7 @@ public class ItemSetAdapter extends BaseAdapter<ItemSet, ItemSetAdapter.ViewHold
                     loadImage(context, value);
                 }, L::e);
             }
-            L.e("end = " + (System.currentTimeMillis() - start));
+            L.v("end = " + (System.currentTimeMillis() - start));
         }
 
         private void loadImage(Context context, MetaHolder meta) {
