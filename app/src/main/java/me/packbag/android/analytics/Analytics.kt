@@ -8,4 +8,5 @@ import me.packbag.android.db.model.ItemSet
 interface Analytics {
     fun logShare(itemSet: ItemSet, method: String)
     fun logShareCancelled(itemSet: ItemSet, method: String)
+    fun logItemSetView(itemSet: ItemSet)
 }

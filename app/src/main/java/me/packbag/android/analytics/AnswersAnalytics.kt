@@ -1,6 +1,7 @@
 package me.packbag.android.analytics
 
 import com.crashlytics.android.answers.Answers
+import com.crashlytics.android.answers.ContentViewEvent
 import com.crashlytics.android.answers.ShareEvent
 
 import me.packbag.android.db.model.ItemSet
@@ -9,6 +10,12 @@ import me.packbag.android.db.model.ItemSet
  * Created by astra on 13.10.2015.
  */
 internal class AnswersAnalytics : Analytics {
+    override fun logItemSetView(itemSet: ItemSet) {
+        Answers.getInstance().logContentView(ContentViewEvent()
+                .putContentId(itemSet.id.toString())
+                .putContentName(itemSet.name))
+
+    }
 
     override fun logShare(itemSet: ItemSet, method: String) {
         Answers.getInstance().logShare(ShareEvent()

@@ -1,5 +1,6 @@
 package me.packbag.android.ui.activities;
 
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +25,7 @@ import javax.inject.Inject;
 
 import me.packbag.android.App;
 import me.packbag.android.R;
+import me.packbag.android.analytics.Analytics;
 import me.packbag.android.db.api.Dao;
 import me.packbag.android.db.model.ItemInSet;
 import me.packbag.android.db.model.ItemSet;
@@ -44,15 +46,24 @@ public class ItemListActivity extends AppCompatActivity implements ItemProvider 
     @ViewById TabLayout tabs;
     @ViewById ViewPager viewPager;
 
-    @Extra  ItemSet itemSet;
-    @Inject Dao     dao;
+    @Extra  ItemSet   itemSet;
+    @Inject Dao       dao;
+    @Inject Analytics analytics;
 
     private BehaviorSubject<List<ItemInSet>> typedItems        = BehaviorSubject.create();
     private BehaviorSubject<ItemStatus>      itemStatusChanged = BehaviorSubject.create(ItemStatus.TAKEN);
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        App.get(this).component().inject(this);
+        if (savedInstanceState == null) {
+            analytics.logItemSetView(itemSet);
+        }
+    }
+
     @AfterViews
     void afterViews() {
-        App.get(this).component().inject(this);
         setTitle(itemSet.getName());
 
         ItemListFragmentsAdapter adapter = new ItemListFragmentsAdapter(getSupportFragmentManager(), this);
@@ -64,23 +75,24 @@ public class ItemListActivity extends AppCompatActivity implements ItemProvider 
     }
 
     private void countStatusedItemsForTitles(ItemListFragmentsAdapter adapter) {
-        Observable<Map<ItemStatus, Integer>> statusCounts = itemStatusChanged.flatMap(i -> //`
-                typedItems.flatMap(itemInSets -> {
-                    Observable<GroupedObservable<ItemStatus, ItemInSet>> go = Observable.from(itemInSets)
-                            .groupBy(ItemInSet::getStatus);
-                    return go.flatMap((GroupedObservable<ItemStatus, ItemInSet> obs) -> {
-                        return obs.count().map((Integer count) -> new ItemCount(obs.getKey(), count));
-                    }).toMap(ItemCount::getStatus, ItemCount::getCount);
-                }));
-        itemStatusChanged.filter(prev -> prev == ItemStatus.CURRENT)
-                .flatMap(prev -> typedItems.take(1))
-                .map(itemInSets -> FluentIterable.from(itemInSets)
-                        .filter(it -> it.getStatus() == ItemStatus.CURRENT)
-                        .size())
-                .filter(count -> count == 0)
-                .subscribe(was -> {
-                    BagPackedActivity_.intent(this).itemSet(itemSet).start();
-                });
+        Observable<Map<ItemStatus, Integer>> statusCounts = itemStatusChanged.flatMap(i -> //
+            typedItems.flatMap(itemInSets -> {
+                Observable<GroupedObservable<ItemStatus, ItemInSet>> go = Observable.from(itemInSets)
+                                                                                    .groupBy(ItemInSet::getStatus);
+                return go.flatMap((GroupedObservable<ItemStatus, ItemInSet> obs) -> {
+                    return obs.count().map((Integer count) -> new ItemCount(obs.getKey(), count));
+                }).toMap(ItemCount::getStatus, ItemCount::getCount);
+            }));
+        itemStatusChanged //
+            .filter(prev -> prev == ItemStatus.CURRENT)
+            .flatMap(prev -> typedItems.take(1))
+            .map(itemInSets -> FluentIterable.from(itemInSets)
+                                             .filter(it -> it.getStatus() == ItemStatus.CURRENT)
+                                             .size())
+            .filter(count -> count == 0)
+            .subscribe(was -> {
+                BagPackedActivity_.intent(this).itemSet(itemSet).start();
+            });
 
         statusCounts.subscribe((map) -> {
             adapter.onEvent(map);
@@ -103,12 +115,12 @@ public class ItemListActivity extends AppCompatActivity implements ItemProvider 
     public Observable<List<ItemInSet>> getItems(ItemStatus itemStatus) {
         return typedItems.flatMap((List<ItemInSet> itemInSets) -> {
             return Observable.from(itemInSets)
-                    .filter(input -> input.getStatus() == itemStatus)
-                    .toSortedList((item, item2) -> {
-                        return Ordering.natural()
-                                .onResultOf((ItemInSet item1) -> item1.getItem().getCategory().getId())
-                                .compare(item, item2);
-                    });
+                             .filter(input -> input.getStatus() == itemStatus)
+                             .toSortedList((item, item2) -> {
+                                 return Ordering.natural()
+                                                .onResultOf((ItemInSet item1) -> item1.getItem().getCategory().getId())
+                                                .compare(item, item2);
+                             });
         });
     }
 
