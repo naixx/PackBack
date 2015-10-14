@@ -23,3 +23,12 @@ internal class ItemStatusChangedEvent(itemSet: ItemSet, item: Item, itemStatus: 
         putCustomAttribute("Status", itemStatus.toString())
     }
 }
+
+internal class ItemAddedEvent(itemSet: ItemSet, item: Item) : CustomEvent("itemAdded") {
+    init {
+        putCustomAttribute("Item Set", itemSet.id.toString())
+        putCustomAttribute("Item Set Name", itemSet.name)
+        putCustomAttribute("Item", item.serverId.toString())
+        putCustomAttribute("Item Name", item.name)
+    }
+}

@@ -72,9 +72,9 @@ public class NewItemActivity extends AppCompatActivity implements BaseAdapter.In
 
         Observable<Item> items = dao.itemsExcludingItemSet(itemSet).cache();
         Observable<CharSequence> textEvents = RxTextView.textChanges(name)
-                .map(it -> it.toString().toLowerCase().trim());
+                                                        .map(it -> it.toString().toLowerCase().trim());
         textEvents.flatMap(text -> items.filter(item -> item.getName().toLowerCase().contains(text)).toList())
-                .subscribe(autocompleteAdapter::swapItems);
+                  .subscribe(autocompleteAdapter::swapItems);
         textEvents.filter(it -> it.length() > 0).subscribe(it -> name.setError(null));
         textEvents.map(CharSequence::toString).subscribe(autocompleteAdapter::setHighlightQuery);
     }
@@ -91,22 +91,21 @@ public class NewItemActivity extends AppCompatActivity implements BaseAdapter.In
         item.setCategory(selectedItem.category.getId());
 
         item.insert();
-        ItemInSet itemInSet = new ItemInSet();
-        itemInSet.setItemSet(itemSet.getId());
-        itemInSet.setItem(item.getId());
-        itemInSet.insert();
-        L.v(itemInSet);
-        setResult(RESULT_OK);
-        finish();
+        addItem(item);
     }
 
     @Override
     public void onClick(Item item) {
+        addItem(item);
+    }
+
+    private void addItem(Item item) {
         ItemInSet itemInSet = new ItemInSet();
         itemInSet.setItemSet(itemSet.getId());
         itemInSet.setItem(item.getId());
         itemInSet.insert();
         L.v(itemInSet);
+        App.get(this).component().analytics().logAddItem(itemSet, item);
         setResult(RESULT_OK);
         finish();
     }

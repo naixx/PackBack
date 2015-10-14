@@ -13,6 +13,11 @@ import me.packbag.android.db.model.ItemStatus
  */
 internal class AnswersAnalytics : Analytics {
 
+    override fun logAddItem(itemSet: ItemSet, item: Item) {
+        Answers.getInstance().logCustom(ItemAddedEvent(itemSet, item))
+
+    }
+
     override fun logItemStatusChanged(itemSet: ItemSet, item: Item, itemStatus: ItemStatus) {
         Answers.getInstance().logCustom(ItemStatusChangedEvent(itemSet, item, itemStatus))
 

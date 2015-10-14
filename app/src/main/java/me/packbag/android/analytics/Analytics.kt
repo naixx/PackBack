@@ -12,4 +12,5 @@ interface Analytics {
     fun logShareCancelled(itemSet: ItemSet, method: String)
     fun logItemSetView(itemSet: ItemSet)
     fun logItemStatusChanged(itemSet: ItemSet, item: Item, itemStatus: ItemStatus)
+    fun logAddItem(itemSet: ItemSet, item: Item)
 }
