@@ -33,7 +33,7 @@
     @butterknife.* <methods>;
 }
 ########
--dontwarn javax.annotation.*
+-dontwarn javax.annotation.**
 -dontwarn com.squareup.okhttp.**
 -dontwarn okio.**
 -dontwarn retrofit.**

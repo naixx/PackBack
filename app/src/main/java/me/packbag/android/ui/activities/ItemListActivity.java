@@ -139,10 +139,11 @@ public class ItemListActivity extends AppCompatActivity implements ItemProvider 
 
     @SuppressWarnings("unused")
     public void onEvent(ItemStatusChangedEvent e) {
-        ItemStatus prev = e.getItem().getStatus();
-        e.getItem().setStatus(e.getStatus()).async().save();
+        ItemStatus prev = e.getItemInSet().getStatus();
+        e.getItemInSet().setStatus(e.getStatus()).async().save();
         typedItems.take(1).subscribe(typedItems::onNext);
         itemStatusChanged.onNext(prev);
+        analytics.logItemStatusChanged(itemSet, e.getItemInSet().getItem(), e.getStatus());
     }
 
     @OptionsItem(R.id.action_new_item)
