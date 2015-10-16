@@ -74,7 +74,7 @@ public class ItemListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        adapter = new ItemsAdapter(Customizers.get(status));
+        adapter = new ItemsAdapter(Customizers.create(status));
     }
 
     private void loadAllItems() {getItems().subscribe(adapter::swapItems);}

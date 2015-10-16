@@ -23,7 +23,7 @@ private class UselessAdapterCustomizer : ItemsAdapter.AdapterCustomizer {
 
 object Customizers {
     @JvmStatic
-    fun get(status: ItemStatus): ItemsAdapter.AdapterCustomizer = when (status) {
+    fun create(status: ItemStatus): ItemsAdapter.AdapterCustomizer = when (status) {
         ItemStatus.CURRENT -> CurrentAdapterCustomizer()
         ItemStatus.TAKEN -> TakenAdapterCustomizer()
         ItemStatus.USELESS -> UselessAdapterCustomizer()
