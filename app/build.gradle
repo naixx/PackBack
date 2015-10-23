@@ -16,7 +16,7 @@ repositories {
 apply plugin: 'io.fabric'
 apply plugin: 'android-apt'
 apply plugin: 'me.tatarka.retrolambda'
-//apply plugin: 'com.android.databinding'
+apply plugin: 'com.android.databinding'
 apply plugin: 'kotlin-android'
 apply plugin: 'com.getkeepsafe.dexcount'
 

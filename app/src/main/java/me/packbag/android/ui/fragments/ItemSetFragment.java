@@ -6,7 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
 import com.devspark.progressfragment.ProgressFragment;
-import com.github.naixx.BaseAdapter;
+import com.github.naixx.BindingBaseAdapter;
 import com.github.naixx.L;
 
 import org.androidannotations.annotations.EFragment;
@@ -23,7 +23,7 @@ import me.packbag.android.ui.adapters.ItemSetAdapter;
 import static com.github.naixx.Rx.async2ui;
 
 @EFragment
-public class ItemSetFragment extends ProgressFragment implements BaseAdapter.InteractionListener<ItemSet> {
+public class ItemSetFragment extends ProgressFragment implements BindingBaseAdapter.InteractionListener<ItemSet> {
 
     @Bind(R.id.recyclerView) RecyclerView                   recyclerView;
     @FragmentByTag           ItemSetActivity.LoaderFragment service;
