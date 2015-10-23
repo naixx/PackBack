@@ -31,7 +31,7 @@ public class ItemSetFragment extends ProgressFragment implements BindingBaseAdap
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setContentView(R.layout.activity_itemset);
+        setContentView(R.layout.fragment_itemset);
         ButterKnife.bind(this, getView());
         setContentShown(false);
         setEmptyText("Не могу загрузить списки");

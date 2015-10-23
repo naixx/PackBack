@@ -7,14 +7,14 @@ buildscript {
         classpath 'io.fabric.tools:gradle:1.+'
     }
 }
-apply plugin: 'com.android.application'
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
 }
 
+apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
-apply plugin: 'android-apt'
+//apply plugin: 'android-apt'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.android.databinding'
 apply plugin: 'kotlin-android'
@@ -63,23 +63,27 @@ android {
         }
     }
 }
-apt {
-    arguments {
-        androidManifestFile variant.outputs[0].processResources.manifestFile
-        resourcePackageName android.defaultConfig.applicationId
-        trace true
-    }
-}
-//kapt {
-//    generateStubs = true
+//apt {
 //    arguments {
-//        arg("androidManifestFile", variant.outputs[0].processResourcesTask.manifestFile)
+//        androidManifestFile variant.outputs[0].processResources.manifestFile
+//        resourcePackageName android.defaultConfig.applicationId
+//        trace true
 //    }
 //}
+kapt {
+    generateStubs = true
+    arguments {
+        arg("androidManifestFile", variant.outputs[0].processResourcesTask.manifestFile)
+        arg("resourcePackageName", android.defaultConfig.applicationId)
+    }
+}
 retrolambda {
     jdk System.getenv("JAVA8_HOME")
     oldJdk System.getenv("JAVA7_HOME")
     javaVersion JavaVersion.VERSION_1_7
+    jvmArgs '-noverify'
+    defaultMethods false
+    incremental false
 }
 
 dependencies {
@@ -89,12 +93,12 @@ dependencies {
     compile 'com.android.support:design:23.0.0'
     compile 'com.android.support:cardview-v7:23.0.0'
     compile 'com.android.support:palette-v7:23.0.0'
-    apt 'com.raizlabs.android:DBFlow-Compiler:2.2.1'
+    kapt 'com.raizlabs.android:DBFlow-Compiler:2.2.1'
     compile 'com.raizlabs.android:DBFlow-Core:2.2.1'
     compile 'com.raizlabs.android:DBFlow:2.2.1'
     //compile 'com.fasterxml.jackson.jr:jackson-jr-objects:2.5.0'
     compile 'com.google.dagger:dagger:2.0.1'
-    apt 'com.google.dagger:dagger-compiler:2.0.1'
+    kapt 'com.google.dagger:dagger-compiler:2.0.1'
 
     compile 'io.reactivex:rxandroid:1.0.1'
     compile 'com.jakewharton.rxbinding:rxbinding-recyclerview-v7:0.2.0'
@@ -108,8 +112,9 @@ dependencies {
 //        transitive = true
 //    }
     compile 'com.jakewharton:butterknife:7.0.0'
+    kapt 'com.jakewharton:butterknife:7.0.0'
     compile 'org.androidannotations:androidannotations-api:3.3.1'
-    apt "org.androidannotations:androidannotations:3.3.1"
+    kapt "org.androidannotations:androidannotations:3.3.1"
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     compile 'com.squareup.retrofit:converter-jackson:1.9.0'
 
@@ -123,6 +128,7 @@ dependencies {
     compile 'com.github.johnkil.android-progressfragment:progressfragment:1.4.0'
 
     compile 'com.facebook.android:facebook-android-sdk:4.6.0'
+    kapt 'com.android.databinding:compiler:1.0-rc4'
 }
 configurations {
     compile.exclude module: 'gson'
