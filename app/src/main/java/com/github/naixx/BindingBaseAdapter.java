@@ -1,12 +1,11 @@
 package com.github.naixx;
 
-import android.databinding.ViewDataBinding;
 import android.support.v7.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BindingBaseAdapter<T extends WithId, B extends ViewDataBinding, VH extends BindingBaseViewHolder> extends RecyclerView.Adapter<VH> {
+public abstract class BindingBaseAdapter<T extends WithId, VH extends BindingBaseViewHolder> extends RecyclerView.Adapter<VH> {
 
     public interface InteractionListener<T> {
 

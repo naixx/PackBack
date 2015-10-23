@@ -14,7 +14,7 @@ import me.packbag.android.db.model.ItemSet;
 /**
  * Created by astra on 17.07.2015.
  */
-public class ItemSetAdapter extends BindingBaseAdapter<ItemSet, ListItemSetBinding, ItemSetAdapter.ViewHolder> {
+public class ItemSetAdapter extends BindingBaseAdapter<ItemSet, ItemSetAdapter.ViewHolder> {
 
     class ViewHolder extends BindingBaseViewHolder<ItemSet, ListItemSetBinding> {
         public ViewHolder(View itemView) {
