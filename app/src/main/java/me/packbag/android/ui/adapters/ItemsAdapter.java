@@ -76,7 +76,7 @@ public class ItemsAdapter extends BaseAdapter<ItemInSet, ItemsAdapter.ViewHolder
 
     private final AdapterCustomizer customizer;
 
-    class HeaderViewHolder extends com.github.naixx.BaseViewHolder<String> {
+    class HeaderViewHolder extends BaseViewHolder<String> {
 
         @Bind(android.R.id.text1) TextView name;
 
