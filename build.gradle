@@ -1,7 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    extensions.kotlinVersion = "0.14.+"
+    extensions.kotlinVersion = "1.0.+"
     repositories {
         jcenter()
         maven { url 'http://oss.sonatype.org/content/repositories/snapshots' }
