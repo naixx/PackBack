@@ -3,7 +3,6 @@ package me.packbag.android.ui.adapters
 import android.graphics.Color
 import android.text.SpannableStringBuilder
 import android.text.style.BackgroundColorSpan
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -12,6 +11,7 @@ import com.github.naixx.BaseAdapter
 import com.github.naixx.BaseViewHolder
 import me.packbag.android.R
 import me.packbag.android.db.model.Item
+import me.packbag.android.util.layoutInflater
 import java.util.regex.Pattern
 
 /**
@@ -46,7 +46,7 @@ class ItemsAutocompleteAdapter(private val listener: BaseAdapter.InteractionList
     var highlightQuery: String? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context)
+        return ViewHolder(parent.context.layoutInflater
                 .inflate(R.layout.list_item_autocomplete, parent, false))
     }
 }

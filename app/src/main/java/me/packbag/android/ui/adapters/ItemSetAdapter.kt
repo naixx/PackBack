@@ -1,15 +1,13 @@
 package me.packbag.android.ui.adapters
 
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import com.github.naixx.BindingBaseAdapter
 import com.github.naixx.BindingBaseViewHolder
-
 import me.packbag.android.R
 import me.packbag.android.databinding.ListItemSetBinding
 import me.packbag.android.db.model.ItemSet
+import me.packbag.android.util.layoutInflater
 
 /**
  * Created by astra on 17.07.2015.
@@ -26,6 +24,6 @@ class ItemSetAdapter(private val listener: BindingBaseAdapter.InteractionListene
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.list_item_set, parent, false))
+        return ViewHolder(parent.context.layoutInflater.inflate(R.layout.list_item_set, parent, false))
     }
 }
