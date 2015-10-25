@@ -2,6 +2,7 @@ package me.packbag.android.workaround;
 
 import android.app.Fragment;
 
+import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.OnActivityResult;
@@ -22,4 +23,6 @@ public class JavaFrag extends Fragment {
     @OnActivityResult(0)
     void onResult() {
     }
+
+    @AfterViews void afterViews(){}
 }

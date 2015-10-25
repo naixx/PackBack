@@ -1,5 +1,6 @@
 package me.packbag.android.ui.fragments
 
+import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.view.MenuItemCompat
 import android.support.v7.widget.LinearLayoutManager
@@ -26,6 +27,13 @@ open class ItemListFragment : Fragment() {
     @FragmentArg lateinit var status: ItemStatus
 
     private val adapter: ItemsAdapter by lazy { ItemsAdapter(Customizers.create(status)) }
+
+
+    //TODO wait for kotlin fix
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        afterViews()
+    }
 
     @AfterViews
     fun afterViews() {
