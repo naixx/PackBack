@@ -28,7 +28,7 @@ open class ItemListFragment : Fragment() {
     private val adapter: ItemsAdapter by lazy { ItemsAdapter(Customizers.create(status)) }
 
     @AfterViews
-    internal fun afterViews() {
+    fun afterViews() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.addItemDecoration(StickyRecyclerHeadersDecoration(adapter))
