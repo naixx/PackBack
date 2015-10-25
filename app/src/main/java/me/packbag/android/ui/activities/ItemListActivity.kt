@@ -20,6 +20,7 @@ import me.packbag.android.ui.events.ItemStatusChangedEvent
 import org.androidannotations.annotations.*
 import rx.Observable
 import rx.subjects.BehaviorSubject
+import java.util.*
 import javax.inject.Inject
 
 @EActivity(R.layout.activity_itemlist)
@@ -61,11 +62,8 @@ open class ItemListActivity : AppCompatActivity(), ItemProvider {
 
     private fun countStatusedItemsForTitles(adapter: ItemListFragmentsAdapter) {
         val statusCounts = itemStatusChanged.flatMap { i ->
-            typedItems.flatMap { itemInSets ->
-                Observable.from(itemInSets)
-                        .groupBy { it.status }
-                        .flatMap { obs -> obs.count().map { count -> ItemCount(obs.key, count) } }
-                        .toMap({ it.status }, { it.count })
+            typedItems.map { itemInSets ->
+                itemInSets.groupBy { it.status }.map { it.key to it.value.size }.toMap()
             }
         }
         itemStatusChanged
@@ -83,20 +81,17 @@ open class ItemListActivity : AppCompatActivity(), ItemProvider {
 
     private fun updateTabTitles(adapter: ItemListFragmentsAdapter) {
         for (i in 0..tabs.tabCount - 1) {
-            //noinspection ConstantConditions
-            tabs.getTabAt(i)!!.setText(adapter.getPageTitle(i))
+            tabs.getTabAt(i).setText(adapter.getPageTitle(i))
         }
     }
 
     private fun loadItems() {
-        dao.itemsInSets(itemSet).subscribe({ typedItems.onNext(it) })
+        dao.itemsInSets(itemSet).subscribe { typedItems.onNext(it) }
     }
 
     override fun getItems(itemStatus: ItemStatus): Observable<List<ItemInSet>> {
-        return typedItems.flatMap { itemInSets: List<ItemInSet> ->
-            Observable.from(itemInSets)
-                    .filter { input -> input.status == itemStatus }
-                    .toSortedList { itemInSet1, itemInSet2 -> compareValuesBy(itemInSet1, itemInSet2, { it.item.category.id }) }
+        return typedItems.map { itemInSets ->
+            itemInSets.filter { it.status == itemStatus }.sortedBy { it.item.category.id }
         }
     }
 
