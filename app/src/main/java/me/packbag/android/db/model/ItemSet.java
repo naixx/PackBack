@@ -9,18 +9,9 @@ import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ModelContainer;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
-import com.raizlabs.android.dbflow.sql.builder.Condition;
-import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
-import net.tribe7.common.base.Joiner;
 import net.tribe7.common.base.Objects;
-import net.tribe7.common.base.Splitter;
-import net.tribe7.common.collect.FluentIterable;
-import net.tribe7.common.collect.Lists;
-
-import java.util.Collections;
-import java.util.List;
 
 import me.packbag.android.db.api.Db;
 
@@ -55,26 +46,12 @@ public class ItemSet extends BaseModel implements WithId, Parcelable {
     @JsonProperty("item_ids")
     public void setItemIds(Long[] ids) {
         this.ids = ids;
-        item_ids = Joiner.on(",").join(Lists.newArrayList(ids)).trim();
     }
 
     public Long[] getServerIds() {
         return ids;
     }
 
-    public List<Item> getLocalItems() {
-        Integer[] ids = FluentIterable.from(Splitter.on(",").split(item_ids))
-                .transform(Integer::valueOf)
-                .toArray(Integer.class);
-        if (ids.length > 0) {
-            Integer first = ids[0];
-            Object[] o = new Object[ids.length];
-            System.arraycopy(ids, 1, o, 0, ids.length - 1);
-            return new Select().from(Item.class).where(Condition.column(Item_Table.ID).in(first, o)).queryList();
-        } else {
-            return Collections.emptyList();
-        }
-    }
 
     @Override
     public boolean equals(Object o) {
