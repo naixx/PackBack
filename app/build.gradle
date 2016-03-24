@@ -1,28 +1,28 @@
-buildscript {
-    repositories {
-        maven { url 'https://maven.fabric.io/public' }
-    }
-
-    dependencies {
-        classpath 'io.fabric.tools:gradle:1.+'
-    }
-}
-
-repositories {
-    maven { url 'https://maven.fabric.io/public' }
-}
+//buildscript {
+//    repositories {
+//        maven { url 'https://maven.fabric.io/public' }
+//    }
+//
+//    dependencies {
+//        classpath 'io.fabric.tools:gradle:1.+'
+//    }
+//}
+//
+//repositories {
+//    maven { url 'https://maven.fabric.io/public' }
+//}
 
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
-//apply plugin: 'android-apt'
-apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.android.databinding'
 apply plugin: 'kotlin-android'
 apply plugin: 'com.getkeepsafe.dexcount'
+apply plugin: 'me.tatarka.retrolambda'
+//apply plugin: 'android-apt'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    buildToolsVersion "23.0.2"
 
     defaultConfig {
         applicationId "me.packbag.android"
@@ -77,14 +77,14 @@ kapt {
         arg("resourcePackageName", android.defaultConfig.applicationId)
     }
 }
-retrolambda {
-    jdk System.getenv("JAVA8_HOME")
-    oldJdk System.getenv("JAVA7_HOME")
-    javaVersion JavaVersion.VERSION_1_7
-    jvmArgs '-noverify'
-    defaultMethods false
-    incremental false
-}
+//retrolambda {
+//    jdk System.getenv("JAVA8_HOME")
+//    oldJdk System.getenv("JAVA7_HOME")
+//    javaVersion JavaVersion.VERSION_1_7
+//    jvmArgs '-noverify'
+//    defaultMethods false
+//    incremental false
+//}
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -103,7 +103,7 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.0.1'
     compile 'com.jakewharton.rxbinding:rxbinding-recyclerview-v7:0.2.0'
     compile 'com.jakewharton.rxbinding:rxbinding-appcompat-v7:0.2.0'
-    compile 'io.reactivex:rxjava:1.0.14'
+    compile 'io.reactivex:rxjava:1.1.0'
     compile 'com.artemzin.rxjava:proguard-rules:1.0.14.1'
 
     compile 'com.jakewharton.timber:timber:2.2.2'

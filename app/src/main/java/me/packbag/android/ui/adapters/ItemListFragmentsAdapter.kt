@@ -8,6 +8,9 @@ import me.packbag.android.R
 import me.packbag.android.db.model.ItemStatus
 import me.packbag.android.ui.fragments.ItemListFragment_
 
+private const val PAGE_COUNT = 3
+private val STATUSES = arrayOf(ItemStatus.CURRENT, ItemStatus.TAKEN, ItemStatus.USELESS)
+
 class ItemListFragmentsAdapter(fm: FragmentManager, private val context: Context) : FragmentPagerAdapter(fm) {
 
     private val tabTitles = arrayOf(R.string.tab_title_current, R.string.tab_title_taken, R.string.tab_title_useless)
@@ -30,10 +33,5 @@ class ItemListFragmentsAdapter(fm: FragmentManager, private val context: Context
 
     fun onEvent(itemCounts: Map<ItemStatus, Int>) {
         counts = itemCounts
-    }
-
-    companion object {
-        private const val PAGE_COUNT = 3
-        private val STATUSES = arrayOf(ItemStatus.CURRENT, ItemStatus.TAKEN, ItemStatus.USELESS)
     }
 }

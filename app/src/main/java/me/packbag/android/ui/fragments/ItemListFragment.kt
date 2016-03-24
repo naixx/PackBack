@@ -28,7 +28,6 @@ open class ItemListFragment : Fragment() {
 
     private val adapter: ItemsAdapter by lazy { ItemsAdapter(Customizers.create(status)) }
 
-
     //TODO wait for kotlin fix
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

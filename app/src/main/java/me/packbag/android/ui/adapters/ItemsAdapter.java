@@ -26,7 +26,7 @@ public class ItemsAdapter extends BaseAdapter<ItemInSet, ItemsAdapter.ViewHolder
 
     public ItemsAdapter(AdapterCustomizer customizer) {this.customizer = customizer;}
 
-    interface AdapterCustomizer {
+    public interface AdapterCustomizer {
 
         int getPopupMenuRes();
 

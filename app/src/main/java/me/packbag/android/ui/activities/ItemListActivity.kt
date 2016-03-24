@@ -15,20 +15,17 @@ import me.packbag.android.db.model.ItemSet
 import me.packbag.android.db.model.ItemStatus
 import me.packbag.android.ui.ItemProvider
 import me.packbag.android.ui.adapters.ItemListFragmentsAdapter
-import me.packbag.android.ui.events.ItemCount
 import me.packbag.android.ui.events.ItemStatusChangedEvent
 import org.androidannotations.annotations.*
 import rx.Observable
 import rx.subjects.BehaviorSubject
-import java.util.*
 import javax.inject.Inject
+
+private const val REQUEST_CODE_NEW_ITEM = 1
 
 @EActivity(R.layout.activity_itemlist)
 @OptionsMenu(R.menu.activity_item_list)
 open class ItemListActivity : AppCompatActivity(), ItemProvider {
-    companion object {
-        const val REQUEST_CODE_NEW_ITEM = 1
-    }
 
     @ViewById lateinit var tabs: TabLayout
     @ViewById lateinit var viewPager: ViewPager
@@ -81,7 +78,7 @@ open class ItemListActivity : AppCompatActivity(), ItemProvider {
 
     private fun updateTabTitles(adapter: ItemListFragmentsAdapter) {
         for (i in 0..tabs.tabCount - 1) {
-            tabs.getTabAt(i).setText(adapter.getPageTitle(i))
+            tabs.getTabAt(i)!!.text = adapter.getPageTitle(i)
         }
     }
 
