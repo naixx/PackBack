@@ -13,17 +13,18 @@ import me.packbag.android.util.layoutInflater
  * Created by astra on 17.07.2015.
  */
 class ItemSetAdapter(private val listener: BindingBaseAdapter.InteractionListener<ItemSet>) :
-        BindingBaseAdapter<ItemSet, ItemSetAdapter.ViewHolder>() {
+        BindingBaseAdapter<ItemSet, ViewHolder>() {
 
-    inner class ViewHolder(itemView: View) : BindingBaseViewHolder<ItemSet, ListItemSetBinding>(itemView) {
-
-        override fun bind(binding: ListItemSetBinding, item: ItemSet, position: Int) {
-            binding.setItemSet(item)
-            itemView.setOnClickListener { listener.onClick(item) }
-        }
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(parent.context.layoutInflater.inflate(R.layout.list_item_set, parent, false))
+        return ViewHolder(parent.context.layoutInflater.inflate(R.layout.list_item_set, parent, false), listener)
+    }
+}
+
+class ViewHolder(itemView: View, private val listener: BindingBaseAdapter.InteractionListener<ItemSet>) : BindingBaseViewHolder<ItemSet, ListItemSetBinding>(itemView) {
+
+    override fun bind(binding: ListItemSetBinding, item: ItemSet, position: Int) {
+        binding.setItemSet(item)
+        itemView.setOnClickListener { listener.onClick(item) }
     }
 }
