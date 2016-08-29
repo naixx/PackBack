@@ -1,7 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    extensions.kotlinVersion = "1.0.3-eap-30"
+    extensions.kotlinVersion = "1.0.+"
     repositories {
         jcenter()
         maven { url 'http://oss.sonatype.org/content/repositories/snapshots' }
@@ -30,5 +30,5 @@ allprojects {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.14'
+    gradleVersion = '2.14.1'
 }

@@ -17,21 +17,22 @@ apply plugin: 'io.fabric'
 apply plugin: 'kotlin-android'
 apply plugin: 'com.getkeepsafe.dexcount'
 apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "24.0.0"
+    buildToolsVersion "24.0.1"
 
     defaultConfig {
         applicationId "me.packbag.android"
-        minSdkVersion 15
+        minSdkVersion 21
         targetSdkVersion 23
         versionCode 3
         versionName "1.0"
     }
     buildTypes {
         debug {
-            //ext.enableCrashlytics = true
+            ext.enableCrashlytics = false
             minifyEnabled false
             applicationIdSuffix ".debug"
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
