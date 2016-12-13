@@ -1,7 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    extensions.kotlinVersion = "1.0.+"
+    extensions.kotlinVersion = "1.+"
     repositories {
         jcenter()
         maven { url 'http://oss.sonatype.org/content/repositories/snapshots' }
@@ -9,12 +9,12 @@ buildscript {
         maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.0'
-        classpath 'me.tatarka:gradle-retrolambda:3.3.0-beta4'
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.11.3'
+        classpath 'com.android.tools.build:gradle:2.2.+'
+        classpath 'me.tatarka:gradle-retrolambda:3.3.0'
+        classpath 'com.github.ben-manes:gradle-versions-plugin:+'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.2.1'
-        classpath 'io.fabric.tools:gradle:1.20.1'
+        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:+'
+        classpath 'io.fabric.tools:gradle:+'
     }
 }
 
@@ -30,5 +30,5 @@ allprojects {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.14.1'
+    gradleVersion = '3.0'
 }
